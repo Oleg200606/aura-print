@@ -3,8 +3,7 @@
     <nav class="navbar">
       <div class="nav-container">
         <router-link to="/" class="logo">
-          <span class="logo-icon">✨</span>
-          Aura Print
+          <img src="@/assets/logo.png" alt="Aura Print" class="logo-image">
         </router-link>
         <div class="nav-links">
           <router-link to="/">Главная</router-link>
@@ -38,6 +37,12 @@ body {
   line-height: 1.6;
   color: #333;
   background: #f8fafc;
+}
+
+.logo-image {
+  height: 40px;
+  /* или под ваш логотип */
+  width: auto;
 }
 
 #app {
