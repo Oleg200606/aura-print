@@ -44,9 +44,14 @@
                                     <label>Содержание:</label>
                                     <textarea v-model="newNews.content" required></textarea>
                                 </div>
+                                <!-- В Admin.vue в форме добавления новостей -->
                                 <div class="form-group">
-                                    <label>Ссылка на изображение:</label>
-                                    <input v-model="newNews.image" type="url" required>
+                                    <label>Изображение:</label>
+                                    <input type="file" @change="handleNewsImageSelect" accept="image/*"
+                                        class="form-input">
+                                    <small>Или укажите ссылку:</small>
+                                    <input v-model="newNews.image_url" type="url"
+                                        placeholder="https://example.com/image.jpg" class="form-input mt-1">
                                 </div>
                                 <div class="form-actions">
                                     <button type="button" @click="showNewsForm = false" class="btn">Отмена</button>
@@ -170,6 +175,63 @@ export default {
             deleteNews,
             formatDate
         }
+    }
+}
+const newsImageFile = ref(null)
+
+const handleNewsImageSelect = (event) => {
+    newsImageFile.value = event.target.files[0]
+}
+
+const uploadNewsImage = async () => {
+    if (!newsImageFile.value) return null
+
+    const formData = new FormData()
+    formData.append('image', newsImageFile.value)
+    formData.append('folder', 'news')
+
+    try {
+        const response = await fetch('http://localhost:8081/api/admin/upload/image', {
+            method: 'POST',
+            body: formData
+        })
+
+        const result = await response.json()
+        return result.success ? result.data.url : null
+    } catch (error) {
+        console.error('News image upload failed:', error)
+        return null
+    }
+}
+
+const addNews = async () => {
+    // Сначала загружаем изображение если есть
+    if (newsImageFile.value) {
+        const imageUrl = await uploadNewsImage()
+        if (imageUrl) {
+            newNews.value.image_url = imageUrl
+        }
+    }
+
+    // Затем создаем новость
+    try {
+        const response = await fetch('http://localhost:8081/api/admin/news', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newNews.value)
+        })
+
+        if (response.ok) {
+            const newsItem = await response.json()
+            store.commit('ADD_NEWS', newsItem)
+            showNewsForm.value = false
+            newNews.value = { title: '', content: '', image_url: '' }
+            newsImageFile.value = null
+        }
+    } catch (error) {
+        console.error('Failed to add news:', error)
     }
 }
 </script>

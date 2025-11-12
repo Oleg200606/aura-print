@@ -111,6 +111,7 @@ func setupStaticFiles(router *gin.Engine) {
     // Статические файлы для загрузок
     router.Static("/uploads", "./uploads")
     
+    
     // Дополнительные статические пути
     router.Static("/static", "./static")
     router.Static("/assets", "./assets")
