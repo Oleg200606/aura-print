@@ -1,45 +1,54 @@
 package handlers
 
 import (
+    "fmt"
     "net/http"
-    "aura-print/database"
-    "aura-print/models"
-    "aura-print/utils"
-
+    "auraprint/database"
+    "auraprint/models"
     "github.com/gin-gonic/gin"
 )
 
+type LoginRequest struct {
+    Username string `json:"username" binding:"required"`
+    Password string `json:"password" binding:"required"`
+}
+
+type LoginResponse struct {
+    Message string `json:"message"`
+    Admin   string `json:"admin"`
+    Success bool   `json:"success"`
+}
+
 func Login(c *gin.Context) {
-    var loginReq models.LoginRequest
-    if err := c.ShouldBindJSON(&loginReq); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+    var req LoginRequest
+    if err := c.ShouldBindJSON(&req); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
     }
 
-    var user models.User
-    err := database.DB.QueryRow(
-        "SELECT id, username, password_hash, email FROM users WHERE username = $1",
-        loginReq.Username,
-    ).Scan(&user.ID, &user.Username, &user.PasswordHash, &user.Email)
+    fmt.Printf("🔐 Login attempt - Username: %s, Password: %s\n", req.Username, req.Password)
 
-    if err != nil {
-        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+    var admin models.Admin
+    if err := database.DB.Where("username = ?", req.Username).First(&admin).Error; err != nil {
+        fmt.Printf("❌ Admin not found: %s\n", err)
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username"})
         return
     }
 
-    if !utils.CheckPasswordHash(loginReq.Password, user.PasswordHash) {
-        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+    fmt.Printf("✅ Found admin: %s, Stored password: %s\n", admin.Username, admin.Password)
+
+    // SIMPLE PASSWORD COMPARISON (for development)
+    if admin.Password != req.Password {
+        fmt.Printf("❌ Password mismatch: expected '%s', got '%s'\n", admin.Password, req.Password)
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
         return
     }
 
-    token, err := utils.GenerateToken(user.ID, user.Username)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate token"})
-        return
-    }
-
-    c.JSON(http.StatusOK, models.AuthResponse{
-        Token: token,
-        User:  user,
+    fmt.Printf("🎉 Login successful for: %s\n", admin.Username)
+    
+    c.JSON(http.StatusOK, LoginResponse{
+        Message: "Login successful",
+        Admin:   admin.Username,
+        Success: true,
     })
 }

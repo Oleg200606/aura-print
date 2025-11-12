@@ -1,0 +1,220 @@
+<template>
+    <div class="admin">
+        <div class="container">
+            <!-- Login Form -->
+            <div v-if="!$store.state.isAdmin" class="login-section">
+                <div class="login-card card">
+                    <h2>Вход для администратора</h2>
+                    <form @submit.prevent="login">
+                        <div class="form-group">
+                            <label>Логин:</label>
+                            <input v-model="credentials.username" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Пароль:</label>
+                            <input v-model="credentials.password" type="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Войти</button>
+                        <p v-if="loginError" class="error-message">{{ loginError }}</p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Admin Panel -->
+            <div v-else class="admin-panel">
+                <h1>Панель администратора</h1>
+
+                <!-- News Management -->
+                <section class="admin-section">
+                    <h2>Управление новостями</h2>
+                    <button @click="showNewsForm = true" class="btn btn-primary mb-4">
+                        Добавить новость
+                    </button>
+
+                    <!-- News Form Modal -->
+                    <div v-if="showNewsForm" class="modal">
+                        <div class="modal-content">
+                            <h3>Добавить новость</h3>
+                            <form @submit.prevent="addNews">
+                                <div class="form-group">
+                                    <label>Заголовок:</label>
+                                    <input v-model="newNews.title" type="text" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Содержание:</label>
+                                    <textarea v-model="newNews.content" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ссылка на изображение:</label>
+                                    <input v-model="newNews.image" type="url" required>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" @click="showNewsForm = false" class="btn">Отмена</button>
+                                    <button type="submit" class="btn btn-primary">Добавить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- News List -->
+                    <div class="grid grid-2">
+                        <div v-for="item in news" :key="item.id" class="news-admin-card card">
+                            <img :src="item.image" :alt="item.title" class="news-image">
+                            <div class="news-content">
+                                <h3>{{ item.title }}</h3>
+                                <p>{{ item.content }}</p>
+                                <small>{{ formatDate(item.created_at) }}</small>
+                                <button @click="deleteNews(item.id)" class="btn btn-danger btn-sm">
+                                    Удалить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Products Management -->
+                <section class="admin-section">
+                    <h2>Управление товарами</h2>
+                    <p>Управление товарами доступно на странице <router-link to="/catalog">Каталог</router-link></p>
+                </section>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+
+export default {
+    name: 'Admin',
+    setup() {
+        const store = useStore()
+        const credentials = ref({ username: '', password: '' })
+        const loginError = ref('')
+        const showNewsForm = ref(false)
+
+        const newNews = ref({
+            title: '',
+            content: '',
+            image: ''
+        })
+
+        const news = computed(() => store.state.news)
+
+        onMounted(() => {
+            store.dispatch('fetchNews')
+        })
+
+        const login = async () => {
+            console.log('🔄 Sending login request:', credentials.value)
+            const result = await store.dispatch('login', credentials.value)
+            if (!result.success) {
+                loginError.value = result.error
+                console.log('❌ Login failed:', result.error)
+            } else {
+                console.log('✅ Login successful!')
+                loginError.value = ''
+            }
+        }
+
+        const addNews = async () => {
+            try {
+                const response = await fetch('http://localhost:8081/api/admin/news', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newNews.value)
+                })
+
+                if (response.ok) {
+                    const newsItem = await response.json()
+                    store.commit('ADD_NEWS', newsItem)
+                    showNewsForm.value = false
+                    newNews.value = { title: '', content: '', image: '' }
+                }
+            } catch (error) {
+                console.error('Failed to add news:', error)
+            }
+        }
+
+        const deleteNews = async (newsId) => {
+            if (confirm('Вы уверены, что хотите удалить эту новость?')) {
+                try {
+                    const response = await fetch(`http://localhost:8081/api/admin/news/${newsId}`, {
+                        method: 'DELETE'
+                    })
+
+                    if (response.ok) {
+                        store.commit('DELETE_NEWS', newsId)
+                    }
+                } catch (error) {
+                    console.error('Failed to delete news:', error)
+                }
+            }
+        }
+
+        const formatDate = (dateString) => {
+            return new Date(dateString).toLocaleDateString('ru-RU')
+        }
+
+        return {
+            credentials,
+            loginError,
+            showNewsForm,
+            newNews,
+            news,
+            login,
+            addNews,
+            deleteNews,
+            formatDate
+        }
+    }
+}
+</script>
+
+<style scoped>
+.login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+}
+
+.admin-section {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.news-admin-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.news-admin-card .news-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.news-admin-card .btn {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
+.error-message {
+    color: #e74c3c;
+    margin-top: 1rem;
+    text-align: center;
+}
+</style>

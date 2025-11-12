@@ -1,63 +1,39 @@
 package database
 
 import (
-    "database/sql"
-    "fmt"
-    "log"
-	_ "github.com/lib/pq"
-    "aura-print/utils"
-
+    "auraprint/models"
+    "github.com/jinzhu/gorm"
+    _ "github.com/mattn/go-sqlite3"
 )
 
-type Config struct {
-    Host     string
-    Port     string
-    User     string
-    Password string
-    DBName   string
-    SSLMode  string
-}
+var DB *gorm.DB
 
-var DB *sql.DB
-
-func Connect(config Config) error {
-    connStr := fmt.Sprintf(
-        "host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-        config.Host, config.Port, config.User, config.Password, config.DBName,
-    )
-    
-    // Добавьте эту строку для отладки
-    log.Printf("Connection string: host=%s port=%s user=%s dbname=%s", 
-        config.Host, config.Port, config.User, config.DBName)
-
+func InitDatabase() error {
     var err error
-    DB, err = sql.Open("postgres", connStr)
-    if err != nil {
-        log.Printf("Error opening database: %v", err)
-        return err
-    }
-
-    if err = DB.Ping(); err != nil {
-        log.Printf("Error pinging database: %v", err)
-        return err
-    }
-
-    log.Println("Connected to PostgreSQL database")
-    return nil
-}
-
-// database/database.go
-func CreateAdminUser(username, password, email string) error {
-    hashedPassword, err := utils.HashPassword(password)
+    DB, err = gorm.Open("sqlite3", "auraprint.db")
     if err != nil {
         return err
     }
 
-    _, err = DB.Exec(`
-        INSERT INTO users (username, password_hash, email) 
-        VALUES ($1, $2, $3)
-        ON CONFLICT (username) DO NOTHING
-    `, username, hashedPassword, email)
+    // Auto migrate models
+    DB.AutoMigrate(&models.Product{}, &models.News{}, &models.Admin{})
     
-    return err
+    // Create default admin user with SIMPLE PASSWORD (for development)
+    admin := models.Admin{
+        Username: "admin",
+        Password: "password", // plain text password
+    }
+    
+    // Check if admin exists, if not create it
+    var existingAdmin models.Admin
+    if DB.Where("username = ?", "admin").First(&existingAdmin).Error != nil {
+        if err := DB.Create(&admin).Error; err != nil {
+            return err
+        }
+        println("✅ Admin user created: admin / password")
+    } else {
+        println("✅ Admin user already exists: admin / password")
+    }
+    
+    return nil
 }
