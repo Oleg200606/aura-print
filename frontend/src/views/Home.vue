@@ -4,75 +4,199 @@
         <section class="hero">
             <div class="hero-content">
                 <h1 class="hero-title">AuraPrint</h1>
-                <p class="hero-subtitle">Производство маркетингового оборудования и корпоративного мерча</p>
-                <router-link to="/catalog" class="btn btn-primary">Смотреть каталог</router-link>
+                <p class="hero-subtitle">Профессиональная печать и корпоративный мерч</p>
+                <p class="hero-description">Современное оборудование, качественные материалы и индивидуальный подход к
+                    каждому клиенту</p>
+                <div class="hero-buttons">
+                    <router-link to="/catalog" class="btn btn-primary">Смотреть каталог</router-link>
+                    <router-link to="/contact" class="btn btn-secondary">Получить консультацию</router-link>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Выполненных проектов</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3+</div>
+                    <div class="stat-label">Года на рынке</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Довольных клиентов</div>
+                </div>
             </div>
         </section>
 
         <!-- Services Section -->
         <section class="container">
-            <h2 class="text-center mb-4">Наши услуги</h2>
+            <div class="section-header">
+                <h2>Наши услуги</h2>
+                <p>Полный цикл производства от дизайна до готовой продукции</p>
+            </div>
             <div class="grid grid-3">
                 <div class="service-card card">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400" alt="Футболки">
+                        <img src="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=500&h=300&fit=crop"
+                            alt="Печать на одежде">
                     </div>
                     <div class="service-content">
-                        <h3>Футболки</h3>
-                        <p>Качественная печать на футболках любого размера и цвета</p>
+                        <h3>Печать на одежде</h3>
+                        <p>Футболки, худи, поло и другая одежда с качественной печатью</p>
+                        <ul class="service-features">
+                            <li>Шелкография и термоперенос</li>
+                            <li>Любые размеры и цвета</li>
+                            <li>Собственное производство</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="service-card card">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400" alt="Кружки">
+                        <img src="https://images.unsplash.com/photo-1549465227-3d42e0078eed?w=500&h=300&fit=crop"
+                            alt="Сувенирная продукция">
                     </div>
                     <div class="service-content">
-                        <h3>Кружки</h3>
-                        <p>Сублимационная печать на кружках с вашим дизайном</p>
+                        <h3>Сувенирная продукция</h3>
+                        <p>Кружки, брелоки, чехлы и другие промо-материалы</p>
+                        <ul class="service-features">
+                            <li>Сублимационная печать</li>
+                            <li>Лазерная гравировка</li>
+                            <li>Широкий ассортимент</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="service-card card">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400"
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop"
                             alt="Корпоративный мерч">
                     </div>
                     <div class="service-content">
                         <h3>Корпоративный мерч</h3>
-                        <p>Полный цикл производства корпоративной продукции</p>
+                        <p>Комплексные решения для бизнеса и мероприятий</p>
+                        <ul class="service-features">
+                            <li>Брендирование под ключ</li>
+                            <li>Разработка дизайна</li>
+                            <li>Срочное производство</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advantages Section -->
+        <section class="advantages-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Почему выбирают нас</h2>
+                    <p>Мы обеспечиваем качество на каждом этапе работы</p>
+                </div>
+                <div class="grid grid-4">
+                    <div class="advantage-card">
+                        <div class="advantage-icon">⚡</div>
+                        <h4>Срочное производство</h4>
+                        <p>Выполняем заказы любой сложности в кратчайшие сроки</p>
+                    </div>
+                    <div class="advantage-card">
+                        <div class="advantage-icon">🎨</div>
+                        <h4>Индивидуальный дизайн</h4>
+                        <p>Разработаем уникальный дизайн или воплотим ваши идеи</p>
+                    </div>
+                    <div class="advantage-card">
+                        <div class="advantage-icon">🏭</div>
+                        <h4>Собственное производство</h4>
+                        <p>Контролируем каждый этап от печати до упаковки</p>
+                    </div>
+                    <div class="advantage-card">
+                        <div class="advantage-icon">💎</div>
+                        <h4>Гарантия качества</h4>
+                        <p>Используем только проверенные материалы и технологии</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="container">
+            <div class="section-header">
+                <h2>Как мы работаем</h2>
+                <p>Простой и понятный процесс от заявки до получения заказа</p>
+            </div>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Заявка и консультация</h4>
+                        <p>Обсуждаем ваши задачи и предлагаем оптимальное решение</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Дизайн и согласование</h4>
+                        <p>Разрабатываем макет и утверждаем его с вами</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Производство</h4>
+                        <p>Изготавливаем продукцию с контролем качества</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Доставка</h4>
+                        <p>Передаем готовый заказ удобным для вас способом</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- News Section -->
-        <section class="container news-section">
-            <h2 class="text-center mb-4">Последние новости</h2>
-            <div class="grid grid-2">
-                <div v-for="item in news" :key="item.id" class="news-card card">
-                    <div class="news-image-container">
-                        <img :src="getImageUrl(item.image_url)" :alt="item.title" class="news-image"
-                            @error="handleImageError">
-                    </div>
-                    <div class="news-content">
-                        <h3>{{ item.title }}</h3>
-                        <p>{{ item.content }}</p>
-                        <small>{{ formatDate(item.created_at) }}</small>
+        <section class="news-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Последние новости</h2>
+                    <p>Будьте в курсе наших новинок и акций</p>
+                </div>
+                <div class="grid grid-2">
+                    <div v-for="item in news" :key="item.id" class="news-card card">
+                        <div class="news-image-container">
+                            <img :src="getImageUrl(item.image_url)" :alt="item.title" class="news-image"
+                                @error="handleImageError">
+                            <div class="news-date">
+                                {{ formatDate(item.created_at) }}
+                            </div>
+                        </div>
+                        <div class="news-content">
+                            <h3>{{ item.title }}</h3>
+                            <p>{{ item.content }}</p>
+                            <router-link to="/news" class="read-more">Читать далее →</router-link>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Если новостей нет -->
-            <div v-if="news.length === 0" class="empty-news">
-                <p>Пока нет новостей. Зайдите позже!</p>
+                <!-- Если новостей нет -->
+                <div v-if="news.length === 0" class="empty-news">
+                    <div class="empty-icon">📰</div>
+                    <h3>Пока нет новостей</h3>
+                    <p>Следите за обновлениями, скоро здесь появятся интересные материалы</p>
+                </div>
             </div>
         </section>
 
         <!-- CTA Section -->
         <section class="cta-section">
             <div class="container">
-                <h2>Готовы начать проект?</h2>
-                <p>Свяжитесь с нами для получения бесплатной консультации</p>
-                <router-link to="/contact" class="btn btn-primary">Связаться с нами</router-link>
+                <div class="cta-content">
+                    <h2>Начните свой проект сегодня</h2>
+                    <p>Получите бесплатную консультацию и расчет стоимости вашего заказа</p>
+                    <div class="cta-buttons">
+                        <router-link to="/contact" class="btn btn-primary">Обсудить проект</router-link>
+                        <a href="tel:+79955054001" class="btn btn-secondary">Позвонить нам</a>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
@@ -98,29 +222,26 @@ export default {
         }
 
         const getImageUrl = (imagePath) => {
-            console.log('Image path:', imagePath) // Для дебага
+            console.log('Image path:', imagePath)
 
             if (!imagePath) {
-                return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop'
+                return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop'
             }
 
-            // Если это полный URL
             if (imagePath.startsWith('http')) {
                 return imagePath
             }
 
-            // Если это локальный путь
             if (imagePath.startsWith('/')) {
                 return `http://localhost:8081${imagePath}`
             }
 
-            // По умолчанию
             return `http://localhost:8081/uploads/news/${imagePath}`
         }
 
         const handleImageError = (event) => {
             console.log('Image load error:', event)
-            event.target.src = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop'
+            event.target.src = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop'
         }
 
         return {
@@ -136,39 +257,104 @@ export default {
 <style scoped>
 .hero {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)),
-        url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200');
+        url('https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=1200&h=800&fit=crop');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
     color: white;
     text-align: center;
-    padding: 8rem 2rem;
+    padding: 6rem 2rem 4rem;
     position: relative;
 }
 
 .hero-content {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 0 auto 3rem;
     position: relative;
     z-index: 2;
 }
 
 .hero-title {
-    font-size: 4rem;
+    font-size: 3.5rem;
     margin-bottom: 1rem;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
     opacity: 0.95;
+    font-weight: 300;
+}
+
+.hero-description {
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.section-header p {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .service-card {
     text-align: center;
     padding: 0;
     overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .service-image {
@@ -185,27 +371,140 @@ export default {
 }
 
 .service-card:hover .service-image img {
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 
 .service-content {
-    padding: 1.5rem;
+    padding: 2rem;
+}
+
+.service-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
 }
 
 .service-card h3 {
     margin-bottom: 1rem;
     color: #2c3e50;
+    font-size: 1.5rem;
+}
+
+.service-card p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.service-features {
+    text-align: left;
+    list-style: none;
+    padding: 0;
+}
+
+.service-features li {
+    padding: 0.5rem 0;
+    color: #555;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.service-features li:before {
+    content: "✓";
+    color: #667eea;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.advantages-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    padding: 5rem 0;
+}
+
+.grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.advantage-card {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.advantage-card:hover {
+    transform: translateY(-5px);
+}
+
+.advantage-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.advantage-card h4 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.advantage-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.step-number {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.step-content p {
+    color: #666;
+    line-height: 1.6;
 }
 
 .news-section {
     background: #f8f9fa;
-    padding: 4rem 0;
+    padding: 5rem 0;
 }
 
 .news-card {
     display: flex;
     flex-direction: column;
     height: 100%;
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .news-image-container {
@@ -213,6 +512,7 @@ export default {
     height: 250px;
     overflow: hidden;
     background: #f0f0f0;
+    position: relative;
 }
 
 .news-image {
@@ -226,8 +526,20 @@ export default {
     transform: scale(1.05);
 }
 
+.news-date {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(102, 126, 234, 0.9);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
 .news-content {
-    padding: 1.5rem;
+    padding: 2rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -237,44 +549,115 @@ export default {
     margin-bottom: 1rem;
     color: #2c3e50;
     font-size: 1.25rem;
+    line-height: 1.4;
 }
 
 .news-content p {
     flex-grow: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     color: #666;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
-.news-content small {
-    color: #999;
-    font-size: 0.9rem;
+.read-more {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.read-more:hover {
+    color: #764ba2;
 }
 
 .empty-news {
     text-align: center;
-    padding: 2rem;
-    color: #666;
+    padding: 4rem 2rem;
     background: white;
-    border-radius: 10px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.empty-news h3 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.empty-news p {
+    color: #666;
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.6;
 }
 
 .cta-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    padding: 5rem 0;
     text-align: center;
-    padding: 4rem 2rem;
 }
 
-.cta-section h2 {
+.cta-content h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
 }
 
-.cta-section p {
+.cta-content p {
     font-size: 1.2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: white;
+    color: #667eea;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-secondary:hover {
+    background: white;
+    color: #667eea;
+    transform: translateY(-2px);
 }
 
 /* Адаптивность */
@@ -284,11 +667,52 @@ export default {
     }
 
     .hero-subtitle {
+        font-size: 1.4rem;
+    }
+
+    .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .hero-buttons,
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .process-step {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .grid-3,
+    .grid-2,
+    .grid-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 4rem 1rem 3rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
         font-size: 1.2rem;
     }
 
-    .grid-3 {
-        grid-template-columns: 1fr;
+    .service-content,
+    .news-content {
+        padding: 1.5rem;
     }
 }
 </style>

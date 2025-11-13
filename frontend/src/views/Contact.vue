@@ -11,33 +11,33 @@
                     <div class="info-card">
                         <h2>Контактная информация</h2>
 
-                        <div class="contact-item">
+                        <div class="contact-item" @click="sendEmail">
                             <div class="icon-wrapper">
                                 <span class="icon">📧</span>
                             </div>
                             <div class="contact-text">
                                 <h3>Email</h3>
-                                <p>info@auraprint.ru</p>
+                                <p class="clickable">auraprint@mail.ru</p>
                             </div>
                         </div>
 
-                        <div class="contact-item">
+                        <div class="contact-item" @click="makeCall">
                             <div class="icon-wrapper">
                                 <span class="icon">📞</span>
                             </div>
                             <div class="contact-text">
                                 <h3>Телефон</h3>
-                                <p>+7 (999) 123-45-67</p>
+                                <p class="clickable">+7 (995) 505-40-01</p>
                             </div>
                         </div>
 
-                        <div class="contact-item">
+                        <div class="contact-item" @click="openMap">
                             <div class="icon-wrapper">
                                 <span class="icon">📍</span>
                             </div>
                             <div class="contact-text">
                                 <h3>Адрес</h3>
-                                <p>г. Москва, ул. Примерная, д. 123</p>
+                                <p class="clickable">г. Москва, пр-кт Волгоградский 32к31</p>
                             </div>
                         </div>
 
@@ -126,6 +126,39 @@ export default {
         const errors = ref({})
         const notification = ref({ message: '', type: '' })
 
+        // Функция для отправки email
+        const sendEmail = () => {
+            const email = 'auraprint@mail.ru'
+            const subject = 'Вопрос от клиента'
+            const body = 'Здравствуйте! Хочу узнать о ваших услугах.'
+
+            // Создаем ссылку mailto
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+
+            // Открываем почтовый клиент
+            window.location.href = mailtoLink
+        }
+
+        // Функция для звонка
+        const makeCall = () => {
+            const phoneNumber = '+79955054001' // Убираем все нецифровые символы
+            window.location.href = `tel:${phoneNumber}`
+        }
+
+        // Функция для открытия карт
+        const openMap = () => {
+            const address = 'г. Москва, пр-кт Волгоградский 32к31'
+
+            // Ссылка для Яндекс Карт
+            const yandexMapsUrl = `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`
+
+            // Альтернативная ссылка для Google Maps (на всякий случай)
+            const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
+
+            // Пытаемся открыть Яндекс Карты, если не получится - Google Maps
+            window.open(yandexMapsUrl, '_blank')
+        }
+
         const showNotification = (message, type = 'success') => {
             notification.value = { message, type }
             setTimeout(() => {
@@ -162,7 +195,7 @@ export default {
             isLoading.value = true
 
             try {
-                const response = await fetch('http://localhost:8081/api/contact', { // Измените URL
+                const response = await fetch('http://localhost:8081/api/contact', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -191,16 +224,14 @@ export default {
             isLoading,
             errors,
             notification,
-            submitForm
+            submitForm,
+            sendEmail,
+            makeCall,
+            openMap
         }
     }
 }
 </script>
-
-
-
-
-
 
 <style scoped>
 .contact {
@@ -262,11 +293,26 @@ export default {
     padding: 1rem;
     border-radius: 12px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .contact-item:hover {
     background: #f8f9fa;
     transform: translateX(5px);
+}
+
+.contact-item:active {
+    transform: translateX(2px);
+}
+
+.clickable {
+    color: #667eea;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.contact-item:hover .clickable {
+    color: #764ba2;
 }
 
 .icon-wrapper {

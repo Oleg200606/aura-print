@@ -8,38 +8,6 @@
                 <button @click="showProductForm = true" class="btn btn-primary">
                     Добавить товар
                 </button>
-
-                <!-- Upload Image Button -->
-                <button @click="showUploadForm = true" class="btn btn-secondary">
-                    Загрузить изображение
-                </button>
-            </div>
-
-            <!-- Image Upload Modal -->
-            <div v-if="showUploadForm" class="modal">
-                <div class="modal-content">
-                    <h3>Загрузить изображение</h3>
-                    <form @submit.prevent="uploadImage">
-                        <div class="form-group">
-                            <label>Выберите изображение:</label>
-                            <input type="file" @change="handleFileSelect" accept="image/*" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Папка:</label>
-                            <select v-model="uploadFolder" class="form-input">
-                                <option value="products">Товары</option>
-                                <option value="news">Новости</option>
-                                <option value="images">Общие</option>
-                            </select>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" @click="showUploadForm = false" class="btn">Отмена</button>
-                            <button type="submit" class="btn btn-primary" :disabled="uploading">
-                                {{ uploading ? 'Загрузка...' : 'Загрузить' }}
-                            </button>
-                        </div>
-                    </form>
-                </div>
             </div>
 
             <!-- Product Form Modal -->
@@ -56,18 +24,28 @@
                             <textarea v-model="newProduct.description" required class="form-input"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Ссылка на изображение:</label>
-                            <input v-model="newProduct.image_url" type="url" required class="form-input"
-                                placeholder="/api/images/filename.jpg">
-                            <small>Используйте загрузчик выше или укажите путь</small>
+                            <label>Изображение товара:</label>
+                            <div class="file-upload-area" @click="triggerFileInput" @drop="handleDrop" @dragover.prevent
+                                @dragenter.prevent :class="{ 'drag-over': isDragOver }">
+                                <div class="upload-placeholder">
+                                    <div class="upload-icon">📁</div>
+                                    <p v-if="!selectedFile">Перетащите изображение сюда или кликните для выбора</p>
+                                    <p v-else class="file-selected">Выбран файл: {{ selectedFile.name }}</p>
+                                    <small>Поддерживаемые форматы: JPG, PNG, GIF</small>
+                                </div>
+                                <input type="file" ref="fileInput" @change="handleFileSelect" accept="image/*"
+                                    style="display: none">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Категория:</label>
                             <input v-model="newProduct.category" type="text" required class="form-input">
                         </div>
                         <div class="form-actions">
-                            <button type="button" @click="showProductForm = false" class="btn">Отмена</button>
-                            <button type="submit" class="btn btn-primary">Добавить</button>
+                            <button type="button" @click="cancelProductForm" class="btn">Отмена</button>
+                            <button type="submit" class="btn btn-primary" :disabled="uploading">
+                                {{ uploading ? 'Загрузка...' : 'Добавить товар' }}
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -111,10 +89,10 @@ export default {
         const store = useStore()
         const products = computed(() => store.state.products)
         const showProductForm = ref(false)
-        const showUploadForm = ref(false)
         const uploading = ref(false)
         const selectedFile = ref(null)
-        const uploadFolder = ref('products')
+        const isDragOver = ref(false)
+        const fileInput = ref(null)
 
         const newProduct = ref({
             name: '',
@@ -137,17 +115,44 @@ export default {
             event.target.src = '/api/images/default-product.jpg'
         }
 
+        const triggerFileInput = () => {
+            fileInput.value.click()
+        }
+
         const handleFileSelect = (event) => {
-            selectedFile.value = event.target.files[0]
+            const file = event.target.files[0]
+            if (file && file.type.startsWith('image/')) {
+                selectedFile.value = file
+            } else {
+                alert('Пожалуйста, выберите файл изображения (JPG, PNG, GIF)')
+            }
+        }
+
+        const handleDrop = (event) => {
+            event.preventDefault()
+            isDragOver.value = false
+
+            const files = event.dataTransfer.files
+            if (files.length > 0) {
+                const file = files[0]
+                if (file.type.startsWith('image/')) {
+                    selectedFile.value = file
+                } else {
+                    alert('Пожалуйста, перетащите файл изображения (JPG, PNG, GIF)')
+                }
+            }
         }
 
         const uploadImage = async () => {
-            if (!selectedFile.value) return
+            if (!selectedFile.value) {
+                alert('Пожалуйста, выберите изображение для товара')
+                return null
+            }
 
             uploading.value = true
             const formData = new FormData()
             formData.append('image', selectedFile.value)
-            formData.append('folder', uploadFolder.value)
+            formData.append('folder', 'products')
 
             try {
                 const response = await fetch('http://localhost:8081/api/admin/upload/image', {
@@ -158,41 +163,66 @@ export default {
                 const result = await response.json()
 
                 if (result.success) {
-                    alert(`Изображение загружено! URL: ${result.data.url}`)
-                    // Автоматически подставляем URL в форму товара
-                    newProduct.value.image_url = result.data.url
-                    showUploadForm.value = false
-                    showProductForm.value = true
+                    return result.data.url
                 } else {
-                    alert('Ошибка загрузки: ' + result.message)
+                    alert('Ошибка загрузки изображения: ' + result.message)
+                    return null
                 }
             } catch (error) {
                 console.error('Upload failed:', error)
                 alert('Ошибка загрузки изображения')
+                return null
             } finally {
                 uploading.value = false
             }
         }
 
         const addProduct = async () => {
+            if (!selectedFile.value) {
+                alert('Пожалуйста, выберите изображение для товара')
+                return
+            }
+
+            // Сначала загружаем изображение
+            const imageUrl = await uploadImage()
+
+            if (!imageUrl) {
+                return // Ошибка уже обработана в uploadImage
+            }
+
+            // Затем добавляем товар с полученным URL изображения
             try {
+                const productData = {
+                    ...newProduct.value,
+                    image_url: imageUrl
+                }
+
                 const response = await fetch('http://localhost:8081/api/admin/products', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(newProduct.value)
+                    body: JSON.stringify(productData)
                 })
 
                 if (response.ok) {
                     const product = await response.json()
                     store.commit('ADD_PRODUCT', product)
-                    showProductForm.value = false
-                    newProduct.value = { name: '', description: '', image_url: '', category: '' }
+                    cancelProductForm()
+                } else {
+                    alert('Ошибка при добавлении товара')
                 }
             } catch (error) {
                 console.error('Failed to add product:', error)
+                alert('Ошибка при добавлении товара')
             }
+        }
+
+        const cancelProductForm = () => {
+            showProductForm.value = false
+            newProduct.value = { name: '', description: '', image_url: '', category: '' }
+            selectedFile.value = null
+            isDragOver.value = false
         }
 
         const deleteProduct = async (productId) => {
@@ -214,16 +244,18 @@ export default {
         return {
             products,
             showProductForm,
-            showUploadForm,
             uploading,
             selectedFile,
-            uploadFolder,
+            isDragOver,
+            fileInput,
             newProduct,
             getImageUrl,
             handleImageError,
+            triggerFileInput,
             handleFileSelect,
-            uploadImage,
+            handleDrop,
             addProduct,
+            cancelProductForm,
             deleteProduct
         }
     }
@@ -303,21 +335,9 @@ export default {
     font-size: 0.9rem;
 }
 
-.btn-secondary {
-    background: #6c757d;
-    color: white;
-    margin-left: 1rem;
-}
-
-.btn-secondary:hover {
-    background: #5a6268;
-}
-
 .admin-controls {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
 }
 
 .modal {
@@ -369,6 +389,37 @@ export default {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+/* Стили для области загрузки файлов */
+.file-upload-area {
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.file-upload-area:hover {
+    border-color: #667eea;
+    background: #f0f2ff;
+}
+
+.file-upload-area.drag-over {
+    border-color: #667eea;
+    background: #e6ebff;
+}
+
+.upload-placeholder .upload-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.file-selected {
+    color: #28a745;
+    font-weight: 600;
+}
+
 .form-actions {
     display: flex;
     gap: 1rem;
@@ -393,18 +444,12 @@ export default {
         grid-template-columns: 1fr;
     }
 
-    .admin-controls {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .btn-secondary {
-        margin-left: 0;
-        margin-top: 1rem;
-    }
-
     .modal-content {
         margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .file-upload-area {
         padding: 1.5rem;
     }
 }

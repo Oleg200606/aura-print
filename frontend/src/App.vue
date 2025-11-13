@@ -29,8 +29,9 @@
         </div>
         <div class="footer-section">
           <h4>Контакты</h4>
-          <p>Email: info@auraprint.ru</p>
-          <p>Телефон: +7 (999) 123-45-67</p>
+          <p class="clickable" @click="sendEmail">📧 Email: info@auraprint.ru</p>
+          <p class="clickable" @click="makeCall">📞 Телефон: +7 (995) 505-40-01</p>
+          <p class="clickable" @click="openMap">📍 Адрес: г. Москва, пр-кт Волгоградский 32к31</p>
         </div>
         <div class="footer-section">
           <h4>Услуги</h4>
@@ -59,6 +60,29 @@ export default {
 
     const isAdmin = computed(() => store.state.isAdmin)
 
+    // Функция для отправки email
+    const sendEmail = () => {
+      const email = 'auraprint@mail.ru'
+      const subject = 'Вопрос от клиента'
+      const body = 'Здравствуйте! Хочу узнать о ваших услугах.'
+
+      const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+      window.location.href = mailtoLink
+    }
+
+    // Функция для звонка
+    const makeCall = () => {
+      const phoneNumber = '+79955054001'
+      window.location.href = `tel:${phoneNumber}`
+    }
+
+    // Функция для открытия карт
+    const openMap = () => {
+      const address = 'г. Москва, пр-кт Волгоградский 32к31'
+      const yandexMapsUrl = `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`
+      window.open(yandexMapsUrl, '_blank')
+    }
+
     const logout = () => {
       store.commit('SET_ADMIN', false)
       router.push('/')
@@ -66,7 +90,10 @@ export default {
 
     return {
       isAdmin,
-      logout
+      logout,
+      sendEmail,
+      makeCall,
+      openMap
     }
   }
 }
@@ -167,6 +194,32 @@ body {
   margin-bottom: 1rem;
 }
 
+.footer-section p {
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+/* Стили для кликабельных контактов в футере */
+.clickable {
+  cursor: pointer;
+  padding: 0.25rem 0;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.clickable:hover {
+  color: #667eea;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding-left: 0.5rem;
+}
+
+.clickable:active {
+  transform: translateY(1px);
+}
+
 .footer-bottom {
   text-align: center;
   padding: 1rem;
@@ -242,7 +295,6 @@ body {
 .mb-4 {
   margin-bottom: 2rem;
 }
-
 
 /* Дополнительные глобальные стили для изображений */
 .image-placeholder {
@@ -327,6 +379,15 @@ body {
 
   .container {
     padding: 1rem;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .clickable {
+    justify-content: center;
   }
 }
 </style>
