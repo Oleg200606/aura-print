@@ -160,25 +160,28 @@
                     <h2>Последние новости</h2>
                     <p>Будьте в курсе наших новинок и акций</p>
                 </div>
-                <div class="grid grid-2">
-                    <div v-for="item in news" :key="item.id" class="news-card card">
+
+                <!-- Новый дизайн новостей -->
+                <div v-if="news.length > 0" class="news-grid">
+                    <div v-for="item in news" :key="item.id" class="news-item">
                         <div class="news-image-container">
                             <img :src="getImageUrl(item.image_url)" :alt="item.title" class="news-image"
-                                @error="handleImageError">
-                            <div class="news-date">
-                                {{ formatDate(item.created_at) }}
+                                @error="handleImageError" loading="lazy">
+                            <div class="news-overlay">
+                                <div class="news-date-badge">
+                                    {{ formatDate(item.created_at) }}
+                                </div>
                             </div>
                         </div>
-                        <div class="news-content">
-                            <h3>{{ item.title }}</h3>
-                            <p>{{ item.content }}</p>
-                            <router-link to="/news" class="read-more">Читать далее →</router-link>
+                        <div class="news-info">
+                            <h3 class="news-title">{{ item.title }}</h3>
+                            <p class="news-excerpt">{{ truncateText(item.content, 120) }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Если новостей нет -->
-                <div v-if="news.length === 0" class="empty-news">
+                <div v-else class="empty-news">
                     <div class="empty-icon">📰</div>
                     <h3>Пока нет новостей</h3>
                     <p>Следите за обновлениями, скоро здесь появятся интересные материалы</p>
@@ -218,7 +221,18 @@ export default {
 
         const formatDate = (dateString) => {
             if (!dateString) return 'Дата не указана'
-            return new Date(dateString).toLocaleDateString('ru-RU')
+            const date = new Date(dateString)
+            return date.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            })
+        }
+
+        const truncateText = (text, maxLength) => {
+            if (!text) return ''
+            if (text.length <= maxLength) return text
+            return text.substring(0, maxLength) + '...'
         }
 
         const getImageUrl = (imagePath) => {
@@ -247,6 +261,7 @@ export default {
         return {
             news,
             formatDate,
+            truncateText,
             getImageUrl,
             handleImageError
         }
@@ -499,75 +514,111 @@ export default {
     padding: 5rem 0;
 }
 
-.news-card {
+/* Новый дизайн новостей с НЕобрезанными изображениями */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.news-item {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
     display: flex;
     flex-direction: column;
     height: 100%;
-    border: none;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.news-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .news-image-container {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-    background: #f0f0f0;
     position: relative;
+    width: 100%;
+    min-height: 200px;
+    max-height: 300px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
 }
 
 .news-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
 }
 
-.news-card:hover .news-image {
-    transform: scale(1.05);
+.news-item:hover .news-image {
+    transform: scale(1.03);
 }
 
-.news-date {
+.news-overlay {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background: rgba(102, 126, 234, 0.9);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2));
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 1rem;
+    pointer-events: none;
+}
+
+.news-date-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 500;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
-.news-content {
-    padding: 2rem;
+.news-info {
+    padding: 1.5rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
 
-.news-content h3 {
-    margin-bottom: 1rem;
+.news-title {
+    font-size: 1.3rem;
+    font-weight: 700;
     color: #2c3e50;
-    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
     line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
-.news-content p {
-    flex-grow: 1;
-    margin-bottom: 1.5rem;
+.news-excerpt {
     color: #666;
     line-height: 1.6;
-}
-
-.read-more {
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
-}
-
-.read-more:hover {
-    color: #764ba2;
+    font-size: 0.95rem;
+    margin: 0;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .empty-news {
@@ -688,12 +739,26 @@ export default {
 
     .grid-3,
     .grid-2,
-    .grid-4 {
+    .grid-4,
+    .news-grid {
         grid-template-columns: 1fr;
     }
 
     .section-header h2 {
         font-size: 2rem;
+    }
+
+    .news-grid {
+        gap: 1.5rem;
+    }
+
+    .news-item {
+        margin-bottom: 0;
+    }
+
+    .news-image-container {
+        min-height: 180px;
+        max-height: 250px;
     }
 }
 
@@ -711,8 +776,36 @@ export default {
     }
 
     .service-content,
-    .news-content {
+    .news-info {
         padding: 1.5rem;
+    }
+
+    .news-image-container {
+        min-height: 160px;
+        max-height: 220px;
+    }
+
+    .news-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* Дополнительные медиа-запросы для очень больших экранов */
+@media (min-width: 1200px) {
+    .news-grid {
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    }
+
+    .news-image-container {
+        min-height: 220px;
+        max-height: 320px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .news-grid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     }
 }
 </style>

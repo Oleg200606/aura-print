@@ -18,10 +18,14 @@ func InitDatabase() error {
     // Auto migrate models
     DB.AutoMigrate(&models.Product{}, &models.News{}, &models.Admin{})
     
-    // Create default admin user with SIMPLE PASSWORD (for development)
+    // Create default admin user with hashed password
     admin := models.Admin{
         Username: "admin",
-        Password: "password", // plain text password
+    }
+    
+    // Хешируем пароль
+    if err := admin.HashPassword("password"); err != nil {
+        return fmt.Errorf("failed to hash password: %v", err)
     }
     
     // Check if admin exists, if not create it
@@ -30,9 +34,9 @@ func InitDatabase() error {
         if err := DB.Create(&admin).Error; err != nil {
             return err
         }
-        println("✅ Admin user created: admin / password")
+        fmt.Println("✅ Admin user created: admin / password")
     } else {
-        println("✅ Admin user already exists: admin / password")
+        fmt.Println("✅ Admin user already exists")
     }
     
     return nil

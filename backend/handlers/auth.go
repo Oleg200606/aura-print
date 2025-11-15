@@ -22,25 +22,32 @@ type LoginResponse struct {
 func Login(c *gin.Context) {
     var req LoginRequest
     if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        fmt.Printf("❌ JSON bind error: %s\n", err.Error())
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request format"})
         return
     }
 
-    fmt.Printf("🔐 Login attempt - Username: %s, Password: %s\n", req.Username, req.Password)
+    // Валидация входных данных
+    if req.Username == "" || req.Password == "" {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Username and password are required"})
+        return
+    }
+
+    fmt.Printf("🔐 Login attempt - Username: %s\n", req.Username)
 
     var admin models.Admin
     if err := database.DB.Where("username = ?", req.Username).First(&admin).Error; err != nil {
         fmt.Printf("❌ Admin not found: %s\n", err)
-        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username"})
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
         return
     }
 
-    fmt.Printf("✅ Found admin: %s, Stored password: %s\n", admin.Username, admin.Password)
+    fmt.Printf("✅ Found admin: %s\n", admin.Username)
 
-    // SIMPLE PASSWORD COMPARISON (for development)
-    if admin.Password != req.Password {
-        fmt.Printf("❌ Password mismatch: expected '%s', got '%s'\n", admin.Password, req.Password)
-        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
+    // Проверка пароля с использованием bcrypt
+    if err := admin.CheckPassword(req.Password); err != nil {
+        fmt.Printf("❌ Password mismatch: %s\n", err)
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
         return
     }
 

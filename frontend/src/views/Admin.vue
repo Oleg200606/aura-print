@@ -87,6 +87,7 @@
     </div>
 </template>
 
+<!-- Admin.vue - обновленная функция login -->
 <script>
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
@@ -98,11 +99,12 @@ export default {
         const credentials = ref({ username: '', password: '' })
         const loginError = ref('')
         const showNewsForm = ref(false)
+        const newsImageFile = ref(null)
 
         const newNews = ref({
             title: '',
             content: '',
-            image: ''
+            image_url: ''
         })
 
         const news = computed(() => store.state.news)
@@ -113,17 +115,63 @@ export default {
 
         const login = async () => {
             console.log('🔄 Sending login request:', credentials.value)
-            const result = await store.dispatch('login', credentials.value)
-            if (!result.success) {
-                loginError.value = result.error
-                console.log('❌ Login failed:', result.error)
-            } else {
-                console.log('✅ Login successful!')
-                loginError.value = ''
+
+            // Валидация на клиенте
+            if (!credentials.value.username || !credentials.value.password) {
+                loginError.value = 'Пожалуйста, заполните все поля'
+                return
+            }
+
+            try {
+                const result = await store.dispatch('login', credentials.value)
+                if (!result.success) {
+                    loginError.value = result.error || 'Ошибка авторизации'
+                    console.log('❌ Login failed:', result.error)
+                } else {
+                    console.log('✅ Login successful!')
+                    loginError.value = ''
+                }
+            } catch (error) {
+                console.error('Login error:', error)
+                loginError.value = 'Ошибка соединения с сервером'
+            }
+        }
+
+        const handleNewsImageSelect = (event) => {
+            newsImageFile.value = event.target.files[0]
+        }
+
+        const uploadNewsImage = async () => {
+            if (!newsImageFile.value) return null
+
+            const formData = new FormData()
+            formData.append('image', newsImageFile.value)
+            formData.append('folder', 'news')
+
+            try {
+                const response = await fetch('http://localhost:8081/api/admin/upload/image', {
+                    method: 'POST',
+                    body: formData
+                })
+
+                const result = await response.json()
+                return result.success ? result.data.url : null
+            } catch (error) {
+                console.error('News image upload failed:', error)
+                return null
             }
         }
 
         const addNews = async () => {
+            // Сначала загружаем изображение если есть
+            if (newsImageFile.value) {
+                const imageUrl = await uploadNewsImage()
+                if (imageUrl) {
+                    newNews.value.image_url = imageUrl
+                }
+            }
+
+            // Затем создаем новость
             try {
                 const response = await fetch('http://localhost:8081/api/admin/news', {
                     method: 'POST',
@@ -137,7 +185,10 @@ export default {
                     const newsItem = await response.json()
                     store.commit('ADD_NEWS', newsItem)
                     showNewsForm.value = false
-                    newNews.value = { title: '', content: '', image: '' }
+                    newNews.value = { title: '', content: '', image_url: '' }
+                    newsImageFile.value = null
+                } else {
+                    console.error('Failed to add news:', response.statusText)
                 }
             } catch (error) {
                 console.error('Failed to add news:', error)
@@ -153,6 +204,8 @@ export default {
 
                     if (response.ok) {
                         store.commit('DELETE_NEWS', newsId)
+                    } else {
+                        console.error('Failed to delete news:', response.statusText)
                     }
                 } catch (error) {
                     console.error('Failed to delete news:', error)
@@ -170,68 +223,13 @@ export default {
             showNewsForm,
             newNews,
             news,
+            newsImageFile,
             login,
             addNews,
             deleteNews,
-            formatDate
+            formatDate,
+            handleNewsImageSelect
         }
-    }
-}
-const newsImageFile = ref(null)
-
-const handleNewsImageSelect = (event) => {
-    newsImageFile.value = event.target.files[0]
-}
-
-const uploadNewsImage = async () => {
-    if (!newsImageFile.value) return null
-
-    const formData = new FormData()
-    formData.append('image', newsImageFile.value)
-    formData.append('folder', 'news')
-
-    try {
-        const response = await fetch('http://localhost:8081/api/admin/upload/image', {
-            method: 'POST',
-            body: formData
-        })
-
-        const result = await response.json()
-        return result.success ? result.data.url : null
-    } catch (error) {
-        console.error('News image upload failed:', error)
-        return null
-    }
-}
-
-const addNews = async () => {
-    // Сначала загружаем изображение если есть
-    if (newsImageFile.value) {
-        const imageUrl = await uploadNewsImage()
-        if (imageUrl) {
-            newNews.value.image_url = imageUrl
-        }
-    }
-
-    // Затем создаем новость
-    try {
-        const response = await fetch('http://localhost:8081/api/admin/news', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newNews.value)
-        })
-
-        if (response.ok) {
-            const newsItem = await response.json()
-            store.commit('ADD_NEWS', newsItem)
-            showNewsForm.value = false
-            newNews.value = { title: '', content: '', image_url: '' }
-            newsImageFile.value = null
-        }
-    } catch (error) {
-        console.error('Failed to add news:', error)
     }
 }
 </script>

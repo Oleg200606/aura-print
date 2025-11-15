@@ -3,6 +3,7 @@ package main
 import (
     "auraprint/database"
     "auraprint/handlers"
+    "auraprint/middleware"
     "fmt"
     "github.com/gin-gonic/gin"
     "github.com/gin-contrib/cors"
@@ -24,6 +25,9 @@ func main() {
     }
 
     router := gin.Default()
+
+    
+    router.Use(middleware.Logger())
 
     // Настройка статических файлов
     setupStaticFiles(router)
