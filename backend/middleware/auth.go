@@ -3,7 +3,7 @@ package middleware
 import (
     "net/http"
     "strings"
-    "aura-print/utils"
+    "auraprint/utils"
 
     "github.com/gin-gonic/gin"
 )
