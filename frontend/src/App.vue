@@ -11,8 +11,8 @@
           <router-link to="/catalog" class="nav-link">Каталог</router-link>
           <router-link to="/about" class="nav-link">О нас</router-link>
           <router-link to="/contact" class="nav-link">Контакты</router-link>
-          <router-link v-if="!isAdmin" to="/admin" class="nav-link admin-link">Админ</router-link>
-          <button v-else @click="logout" class="nav-link admin-link">Выйти</button>
+          <router-link v-if="isAdmin" to="/admin" class="nav-link">Админ</router-link>
+          <button v-if="isAdmin" @click="logout" class="nav-link admin-link">Выйти</button>
         </div>
       </div>
     </nav>
@@ -48,55 +48,57 @@
 </template>
 
 <script>
-import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default {
-  name: 'App',
+  name: "App",
   setup() {
-    const store = useStore()
-    const router = useRouter()
+    const store = useStore();
+    const router = useRouter();
 
-    const isAdmin = computed(() => store.state.isAdmin)
+    const isAdmin = computed(() => store.state.isAdmin);
 
     // Функция для отправки email
     const sendEmail = () => {
-      const email = 'auraprint@mail.ru'
-      const subject = 'Вопрос от клиента'
-      const body = 'Здравствуйте! Хочу узнать о ваших услугах.'
+      const email = "auraprint@mail.ru";
+      const subject = "Вопрос от клиента";
+      const body = "Здравствуйте! Хочу узнать о ваших услугах.";
 
-      const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-      window.location.href = mailtoLink
-    }
+      const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoLink;
+    };
 
     // Функция для звонка
     const makeCall = () => {
-      const phoneNumber = '+79955054001'
-      window.location.href = `tel:${phoneNumber}`
-    }
+      const phoneNumber = "+79955054001";
+      window.location.href = `tel:${phoneNumber}`;
+    };
 
     // Функция для открытия карт
     const openMap = () => {
-      const address = 'г. Москва, пр-кт Волгоградский 32к31'
-      const yandexMapsUrl = `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`
-      window.open(yandexMapsUrl, '_blank')
-    }
+      const address = "г. Москва, пр-кт Волгоградский 32к31";
+      const yandexMapsUrl = `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`;
+      window.open(yandexMapsUrl, "_blank");
+    };
 
     const logout = () => {
-      store.commit('SET_ADMIN', false)
-      router.push('/')
-    }
+      store.commit("SET_ADMIN", false);
+      router.push("/");
+    };
 
     return {
       isAdmin,
       logout,
       sendEmail,
       makeCall,
-      openMap
-    }
-  }
-}
+      openMap,
+    };
+  },
+};
 </script>
 
 <style>
@@ -108,7 +110,7 @@ export default {
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: #333;
 }
@@ -371,7 +373,6 @@ body {
 
 /* Адаптивность */
 @media (max-width: 768px) {
-
   .grid-3,
   .grid-2 {
     grid-template-columns: 1fr;
