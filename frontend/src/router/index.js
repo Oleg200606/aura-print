@@ -4,27 +4,27 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import("@/views/Home.vue"),
+    component: () => import("@/views/HomeView.vue"),
   },
   {
     path: "/catalog",
     name: "Catalog",
-    component: () => import("@/views/Catalog.vue"),
+    component: () => import("@/views/CatalogView.vue"),
   },
   {
     path: "/admin",
     name: "Admin",
-    component: () => import("@/views/Admin.vue"),
+    component: () => import("@/views/AdminView.vue"),
   },
   {
     path: "/about",
     name: "About",
-    component: () => import("@/views/About.vue"),
+    component: () => import("@/views/AboutView.vue"),
   },
   {
     path: "/contact",
     name: "Contact",
-    component: () => import("@/views/Contact.vue"),
+    component: () => import("@/views/ContactView.vue"),
   },
 ];
 
