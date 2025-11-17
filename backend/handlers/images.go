@@ -15,7 +15,7 @@ import (
 // GetImage возвращает изображение
 func GetImage(c *gin.Context) {
 	filename := c.Param("filename")
-	
+
 	// Безопасная проверка имени файла
 	if strings.Contains(filename, "..") || strings.Contains(filename, "/") {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid filename"})
@@ -104,7 +104,7 @@ func UploadImage(c *gin.Context) {
 	}
 
 	// Возвращаем URL изображения
-	imageURL := fmt.Sprintf("/uploads/%s/%s", folder, newFilename)
+	imageURL := fmt.Sprintf("/%s/%s", folder, newFilename)
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
@@ -120,7 +120,7 @@ func UploadImage(c *gin.Context) {
 // DeleteImage удаляет изображение
 func DeleteImage(c *gin.Context) {
 	filename := c.Param("filename")
-	
+
 	if strings.Contains(filename, "..") {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid filename"})
 		return
@@ -143,7 +143,7 @@ func DeleteImage(c *gin.Context) {
 				})
 				return
 			}
-			
+
 			c.JSON(http.StatusOK, gin.H{
 				"success": true,
 				"message": "Image deleted successfully",
