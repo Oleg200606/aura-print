@@ -38,7 +38,7 @@
                 <div class="service-card card">
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=500&h=300&fit=crop"
-                            alt="Печать на одежде">
+                            alt="Печать на одежде" loading="lazy">
                     </div>
                     <div class="service-content">
                         <h3>Печать на одежде</h3>
@@ -53,7 +53,7 @@
                 <div class="service-card card">
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1549465227-3d42e0078eed?w=500&h=300&fit=crop"
-                            alt="Сувенирная продукция">
+                            alt="Сувенирная продукция" loading="lazy">
                     </div>
                     <div class="service-content">
                         <h3>Сувенирная продукция</h3>
@@ -68,7 +68,7 @@
                 <div class="service-card card">
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop"
-                            alt="Корпоративный мерч">
+                            alt="Корпоративный мерч" loading="lazy">
                     </div>
                     <div class="service-content">
                         <h3>Корпоративный мерч</h3>
@@ -161,7 +161,6 @@
                     <p>Будьте в курсе наших новинок и акций</p>
                 </div>
 
-                <!-- Новый дизайн новостей -->
                 <div v-if="news.length > 0" class="news-grid">
                     <div v-for="item in news" :key="item.id" class="news-item">
                         <div class="news-image-container">
@@ -180,7 +179,6 @@
                     </div>
                 </div>
 
-                <!-- Если новостей нет -->
                 <div v-else class="empty-news">
                     <div class="empty-icon">📰</div>
                     <h3>Пока нет новостей</h3>
@@ -236,8 +234,6 @@ export default {
         }
 
         const getImageUrl = (imagePath) => {
-            console.log('Image path:', imagePath)
-
             if (!imagePath) {
                 return 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop'
             }
@@ -254,7 +250,6 @@ export default {
         }
 
         const handleImageError = (event) => {
-            console.log('Image load error:', event)
             event.target.src = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop'
         }
 
@@ -270,63 +265,61 @@ export default {
 </script>
 
 <style scoped>
+/* Mobile First Approach */
 .hero {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)),
-        url('https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=1200&h=800&fit=crop');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
     color: white;
     text-align: center;
-    padding: 6rem 2rem 4rem;
+    padding: 2rem 1rem;
     position: relative;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .hero-content {
     max-width: 800px;
-    margin: 0 auto 3rem;
-    position: relative;
-    z-index: 2;
+    margin: 0 auto;
 }
 
 .hero-title {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
 }
 
 .hero-subtitle {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     margin-bottom: 1rem;
     opacity: 0.95;
     font-weight: 300;
+    line-height: 1.3;
 }
 
 .hero-description {
-    font-size: 1.2rem;
-    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
     opacity: 0.9;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 .hero-buttons {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    margin-bottom: 2rem;
 }
 
 .hero-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
-    padding: 2rem;
-    border-radius: 20px;
+    padding: 1.5rem;
+    border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -335,41 +328,61 @@ export default {
 }
 
 .stat-number {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
 
 .stat-label {
-    font-size: 1rem;
+    font-size: 0.9rem;
     opacity: 0.9;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 .section-header h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
     color: #2c3e50;
+    line-height: 1.2;
 }
 
 .section-header p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: #666;
-    max-width: 600px;
-    margin: 0 auto;
+    line-height: 1.4;
+}
+
+/* Grid System */
+.grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.grid-3 {
+    grid-template-columns: 1fr;
+}
+
+.grid-4 {
+    grid-template-columns: 1fr;
+}
+
+/* Cards */
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .service-card {
     text-align: center;
     padding: 0;
     overflow: hidden;
-    transition: all 0.3s ease;
-    border: none;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .service-image {
@@ -385,42 +398,29 @@ export default {
     transition: transform 0.3s ease;
 }
 
-.service-card:hover .service-image img {
-    transform: scale(1.1);
-}
-
 .service-content {
-    padding: 2rem;
-}
-
-.service-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    padding: 1.5rem;
 }
 
 .service-card h3 {
     margin-bottom: 1rem;
     color: #2c3e50;
-    font-size: 1.5rem;
-}
-
-.service-card p {
-    color: #666;
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
+    font-size: 1.3rem;
 }
 
 .service-features {
     text-align: left;
     list-style: none;
     padding: 0;
+    margin-top: 1rem;
 }
 
 .service-features li {
-    padding: 0.5rem 0;
+    padding: 0.4rem 0;
     color: #555;
     position: relative;
     padding-left: 1.5rem;
+    font-size: 0.9rem;
 }
 
 .service-features li:before {
@@ -431,70 +431,64 @@ export default {
     left: 0;
 }
 
+/* Advantages */
 .advantages-section {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 5rem 0;
-}
-
-.grid-4 {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    background: #f8f9fa;
+    padding: 3rem 0;
 }
 
 .advantage-card {
     text-align: center;
-    padding: 2rem;
+    padding: 1.5rem;
     background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease;
-}
-
-.advantage-card:hover {
-    transform: translateY(-5px);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .advantage-icon {
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
 }
 
 .advantage-card h4 {
     margin-bottom: 1rem;
     color: #2c3e50;
+    font-size: 1.2rem;
 }
 
 .advantage-card p {
     color: #666;
-    line-height: 1.6;
+    line-height: 1.5;
+    font-size: 0.95rem;
 }
 
+/* Process Steps */
 .process-steps {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
 }
 
 .process-step {
     display: flex;
     align-items: flex-start;
-    gap: 1.5rem;
-    padding: 2rem;
+    gap: 1rem;
+    padding: 1.5rem;
     background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .step-number {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     flex-shrink: 0;
 }
@@ -502,67 +496,47 @@ export default {
 .step-content h4 {
     margin-bottom: 0.5rem;
     color: #2c3e50;
+    font-size: 1.1rem;
 }
 
 .step-content p {
     color: #666;
-    line-height: 1.6;
+    line-height: 1.5;
+    font-size: 0.95rem;
 }
 
+/* News Section */
 .news-section {
     background: #f8f9fa;
-    padding: 5rem 0;
+    padding: 3rem 0;
 }
 
-/* Новый дизайн новостей с НЕобрезанными изображениями */
 .news-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
 }
 
 .news-item {
     background: white;
-    border-radius: 20px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    border: 1px solid #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.news-item:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
 .news-image-container {
     position: relative;
     width: 100%;
-    min-height: 200px;
-    max-height: 300px;
+    height: 200px;
     overflow: hidden;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: #f8f9fa;
 }
 
 .news-image {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    transition: transform 0.5s ease;
-}
-
-.news-item:hover .news-image {
-    transform: scale(1.03);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .news-overlay {
@@ -576,108 +550,67 @@ export default {
     align-items: flex-start;
     justify-content: flex-start;
     padding: 1rem;
-    pointer-events: none;
 }
 
 .news-date-badge {
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     padding: 0.5rem 1rem;
-    border-radius: 25px;
-    font-size: 0.85rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .news-info {
     padding: 1.5rem;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
 }
 
 .news-title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #2c3e50;
     margin-bottom: 0.75rem;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    flex-shrink: 0;
+    line-height: 1.3;
 }
 
 .news-excerpt {
     color: #666;
-    line-height: 1.6;
-    font-size: 0.95rem;
-    margin: 0;
-    flex-grow: 1;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    line-height: 1.5;
+    font-size: 0.9rem;
 }
 
-.empty-news {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-}
-
-.empty-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-}
-
-.empty-news h3 {
-    margin-bottom: 1rem;
-    color: #2c3e50;
-}
-
-.empty-news p {
-    color: #666;
-    max-width: 400px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
+/* CTA Section */
 .cta-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 5rem 0;
+    padding: 3rem 0;
     text-align: center;
 }
 
 .cta-content h2 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
+    line-height: 1.2;
 }
 
 .cta-content p {
-    font-size: 1.2rem;
-    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
     opacity: 0.9;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    line-height: 1.4;
 }
 
 .cta-buttons {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
 }
 
+/* Buttons */
 .btn {
-    padding: 1rem 2rem;
+    padding: 1rem 1.5rem;
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -687,6 +620,7 @@ export default {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    text-align: center;
 }
 
 .btn-primary {
@@ -696,7 +630,7 @@ export default {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
 }
 
 .btn-secondary {
@@ -711,101 +645,133 @@ export default {
     transform: translateY(-2px);
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.5rem;
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Empty States */
+.empty-news {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-news h3 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.empty-news p {
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) {
+    .hero {
+        padding: 4rem 2rem;
     }
 
-    .hero-subtitle {
-        font-size: 1.4rem;
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .hero-buttons {
+        flex-direction: row;
+        justify-content: center;
     }
 
     .hero-stats {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    .hero-buttons,
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .process-step {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .grid-3,
-    .grid-2,
-    .grid-4,
-    .news-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .section-header h2 {
-        font-size: 2rem;
+        flex-direction: row;
+        justify-content: center;
     }
 
     .news-grid {
-        gap: 1.5rem;
-    }
-
-    .news-item {
-        margin-bottom: 0;
-    }
-
-    .news-image-container {
-        min-height: 180px;
-        max-height: 250px;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 480px) {
+/* Desktop Styles */
+@media (min-width: 1024px) {
     .hero {
-        padding: 4rem 1rem 3rem;
+        padding: 6rem 2rem;
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 3.5rem;
     }
 
-    .hero-subtitle {
-        font-size: 1.2rem;
+    .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    .service-content,
-    .news-info {
-        padding: 1.5rem;
+    .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
     }
 
-    .news-image-container {
-        min-height: 160px;
-        max-height: 220px;
+    .process-steps {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .news-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .container {
+        padding: 0 2rem;
     }
 }
 
-/* Дополнительные медиа-запросы для очень больших экранов */
+/* Large Desktop */
 @media (min-width: 1200px) {
     .news-grid {
-        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    }
-
-    .news-image-container {
-        min-height: 220px;
-        max-height: 320px;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     }
 }
 
-@media (min-width: 1400px) {
-    .news-grid {
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+/* Touch Improvements */
+@media (hover: none) and (pointer: coarse) {
+    .btn:hover {
+        transform: none;
+    }
+
+    .card:hover {
+        transform: none;
+    }
+
+    .service-card:hover .service-image img {
+        transform: none;
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }
 </style>
