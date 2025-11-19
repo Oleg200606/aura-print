@@ -149,21 +149,6 @@ const isLoading = ref(false);
 const errors = ref({});
 const notification = ref({ message: "", type: "" });
 
-// Функция для отправки email
-const sendEmail = () => {
-  const email = "auraprint@mail.ru";
-  const subject = "Вопрос от клиента";
-  const body = "Здравствуйте! Хочу узнать о ваших услугах.";
-
-  // Создаем ссылку mailto
-  const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(
-    subject
-  )}&body=${encodeURIComponent(body)}`;
-
-  // Открываем почтовый клиент
-  window.location.href = mailtoLink;
-};
-
 const PHONE_NUMBER = "+79955054001"; // Убираем все нецифровые символы
 const EMAIL_ADDRESS = "auraprint@mail.ru";
 

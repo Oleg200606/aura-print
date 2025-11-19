@@ -17,8 +17,12 @@
           <router-link to="/" class="nav-link" @click="closeMobileMenu">Главная</router-link>
           <router-link to="/catalog" class="nav-link" @click="closeMobileMenu">Каталог</router-link>
           <router-link to="/about" class="nav-link" @click="closeMobileMenu">О нас</router-link>
-          <router-link to="/contact" class="nav-link" @click="closeMobileMenu">Контакты</router-link>
-          <router-link v-if="isAdmin" to="/admin" class="nav-link" @click="closeMobileMenu">Админ</router-link>
+          <router-link to="/contact" class="nav-link" @click="closeMobileMenu"
+            >Контакты</router-link
+          >
+          <router-link v-if="isAdmin" to="/admin" class="nav-link" @click="closeMobileMenu"
+            >Админ</router-link
+          >
           <button v-if="isAdmin" @click="logout" class="nav-link admin-link">Выйти</button>
         </div>
       </div>
@@ -58,67 +62,51 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "App",
-  setup() {
-    const store = useStore();
-    const router = useRouter();
-    const isMobileMenuOpen = ref(false);
+const store = useStore();
+const router = useRouter();
+const isMobileMenuOpen = ref(false);
 
-    const isAdmin = computed(() => store.state.isAdmin);
+const isAdmin = computed(() => store.state.isAdmin);
 
-    const toggleMobileMenu = () => {
-      isMobileMenuOpen.value = !isMobileMenuOpen.value;
-    };
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
 
-    const closeMobileMenu = () => {
-      isMobileMenuOpen.value = false;
-    };
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false;
+};
 
-    const sendEmail = () => {
-      const email = "auraprint@mail.ru";
-      const subject = "Вопрос от клиента";
-      const body = "Здравствуйте! Хочу узнать о ваших услугах.";
+const sendEmail = () => {
+  const email = "auraprint@mail.ru";
+  const subject = "Вопрос от клиента";
+  const body = "Здравствуйте! Хочу узнать о ваших услугах.";
 
-      const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(
-        subject
-      )}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailtoLink;
-    };
+  const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailtoLink;
+};
 
-    const makeCall = () => {
-      const phoneNumber = "+79955054001";
-      window.location.href = `tel:${phoneNumber}`;
-    };
+const makeCall = () => {
+  const phoneNumber = "+79955054001";
+  window.location.href = `tel:${phoneNumber}`;
+};
 
-    const openMap = () => {
-      const address = "г. Москва, пр-кт Волгоградский 32к31";
-      const yandexMapsUrl = `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`;
-      window.open(yandexMapsUrl, "_blank");
-    };
+const openMap = () => {
+  const address = "г. Москва, пр-кт Волгоградский 32к31";
+  const yandexMapsUrl = `https://yandex.ru/maps/?text=${encodeURIComponent(address)}`;
+  window.open(yandexMapsUrl, "_blank");
+};
 
-    const logout = () => {
-      store.commit("SET_ADMIN", false);
-      router.push("/");
-      closeMobileMenu();
-    };
-
-    return {
-      isAdmin,
-      isMobileMenuOpen,
-      toggleMobileMenu,
-      closeMobileMenu,
-      logout,
-      sendEmail,
-      makeCall,
-      openMap,
-    };
-  },
+const logout = () => {
+  store.commit("SET_ADMIN", false);
+  router.push("/");
+  closeMobileMenu();
 };
 </script>
 

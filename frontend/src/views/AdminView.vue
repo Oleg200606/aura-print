@@ -122,8 +122,6 @@ const newNews = ref({
 
 const news = computed(() => store.state.news);
 
-const imageUrl = (image) => import.meta.env.BACKEND_HOST + "/" + image.image_url;
-
 onMounted(() => {
   store.dispatch("fetchNews");
 });
