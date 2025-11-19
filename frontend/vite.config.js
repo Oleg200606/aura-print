@@ -9,7 +9,7 @@ console.log("Current environment:", process.env.NODE_ENV);
 
 export default defineConfig({
   define: {
-    "import.meta.env.BACKEND_HOST": BACKEND_HOST,
+    "import.meta.env.BACKEND_HOST": JSON.stringify(BACKEND_HOST),
   },
   plugins: [vue()],
   resolve: {
