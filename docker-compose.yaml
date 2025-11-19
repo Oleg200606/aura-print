@@ -1,18 +1,20 @@
 services:
-  backend:
-    build: ./backend
-    restart: always
-    ports:
-      - 8081:8081
-    networks:
-      - back_net
-  frontend:
-    build: ./frontend
-    restart: always
-    ports:
-      - 80:80
-    networks:
-      - back_net
+    backend:
+        build: ./backend
+        restart: always
+        ports:
+            - 8081:8081
+        networks:
+            - back_net
+    frontend:
+        build: ./frontend
+        restart: always
+        ports:
+            - 80:5173
+        networks:
+            - back_net
+        environment:
+            NODE_ENV: production
 networks:
-  back_net:
-    driver: bridge
+    back_net:
+        driver: bridge

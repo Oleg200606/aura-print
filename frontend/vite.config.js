@@ -16,7 +16,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": {
-        target: isProduction ? "http://149.154.68.194:8081" : "http://localhost:8081",
+        target: isProduction ? "http://backend:8081" : "http://localhost:8081",
         changeOrigin: true,
         secure: false,
       },
