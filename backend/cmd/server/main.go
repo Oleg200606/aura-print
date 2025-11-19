@@ -8,8 +8,10 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"slices"
 
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/location"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -28,6 +30,7 @@ func main() {
 	router := gin.Default()
 
 	router.Use(middleware.Logger())
+	router.Use(location.Default())
 
 	// Настройка статических файлов
 	setupStaticFiles(router)
@@ -96,10 +99,12 @@ func main() {
 
 	fmt.Println("🚀 Server starting on :8081")
 	fmt.Println("📡 API available at http://localhost:8081/api")
-	fmt.Println("❤️  Health check at http://localhost:8081/health")
-	fmt.Println("🖼️  Images available at http://localhost:8081/uploads/")
+	fmt.Println("❤️ Health check at http://localhost:8081/health")
+	fmt.Println("🖼️ Images available at http://localhost:8081/uploads/")
 
-	router.Run(":8081")
+	if err := router.Run(":8081"); err != nil {
+		log.Fatalf("Failed run server: %s", err)
+	}
 }
 
 // setupStaticFiles настраивает обслуживание статических файлов
@@ -119,12 +124,12 @@ func setupStaticFiles(router *gin.Engine) {
 	router.Static("/static", "./static")
 	router.Static("/assets", "./assets")
 
+	imageExtensions := []string{".jpg", ".jpeg", ".png", ".gif"}
 	// Fallback для изображений
 	router.NoRoute(func(c *gin.Context) {
-		if filepath.Ext(c.Request.URL.Path) == ".jpg" ||
-			filepath.Ext(c.Request.URL.Path) == ".jpeg" ||
-			filepath.Ext(c.Request.URL.Path) == ".png" ||
-			filepath.Ext(c.Request.URL.Path) == ".gif" {
+		urlIsImagePath := slices.Contains(imageExtensions, filepath.Ext(c.Request.URL.Path))
+
+		if urlIsImagePath {
 			c.File("./uploads" + c.Request.URL.Path)
 			return
 		}

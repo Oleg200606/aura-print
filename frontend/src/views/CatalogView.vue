@@ -118,12 +118,12 @@ onMounted(() => {
   store.dispatch("fetchProducts");
 });
 
-const DEFAULT_IMAGE_URL = "http://localhost:8081/api/images/default-product.jpg";
+const DEFAULT_IMAGE_URL = "http://placekitten.com/800/600";
 const getImageUrl = (imagePath) => {
   console.log(imagePath);
   if (!imagePath) return DEFAULT_IMAGE_URL;
   if (imagePath.startsWith("http")) return imagePath;
-  return `http://localhost:8081/api${imagePath}`;
+  return import.meta.env.BACKEND_HOST + `/api${imagePath}`;
 };
 
 /**
@@ -179,7 +179,7 @@ const uploadImage = async () => {
   formData.append("folder", "products");
 
   try {
-    const response = await fetch("http://localhost:8081/api/admin/upload/image", {
+    const response = await fetch("/api/admin/upload/image", {
       method: "POST",
       body: formData,
     });
@@ -221,7 +221,7 @@ const addProduct = async () => {
       image_url: imageUrl,
     };
 
-    const response = await fetch("http://localhost:8081/api/admin/products", {
+    const response = await fetch("/api/admin/products", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -252,7 +252,7 @@ const cancelProductForm = () => {
 const deleteProduct = async (productId) => {
   if (confirm("Вы уверены, что хотите удалить этот товар?")) {
     try {
-      const response = await fetch(`http://localhost:8081/api/admin/products/${productId}`, {
+      const response = await fetch(`/api/admin/products/${productId}`, {
         method: "DELETE",
       });
 

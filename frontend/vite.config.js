@@ -3,9 +3,14 @@ import vue from "@vitejs/plugin-vue";
 
 const isProduction = process.env.NODE_ENV === "production";
 
+const BACKEND_HOST = isProduction ? "http://backend:8081" : "http://localhost:8081";
+
 console.log("Current environment:", process.env.NODE_ENV);
 
 export default defineConfig({
+  define: {
+    "import.meta.env.BACKEND_HOST": BACKEND_HOST,
+  },
   plugins: [vue()],
   resolve: {
     alias: {
@@ -17,7 +22,7 @@ export default defineConfig({
     allowedHosts: [process.env.SITE_HOST],
     proxy: {
       "/api": {
-        target: isProduction ? "http://backend:8081" : "http://localhost:8081",
+        target: BACKEND_HOST,
         changeOrigin: true,
         secure: false,
       },

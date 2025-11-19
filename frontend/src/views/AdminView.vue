@@ -173,7 +173,7 @@ const uploadNewsImage = async () => {
   formData.append("folder", "news");
 
   try {
-    const response = await fetch("http://localhost:8081/api/admin/upload/image", {
+    const response = await fetch("/api/admin/upload/image", {
       method: "POST",
       body: formData,
     });
@@ -222,7 +222,7 @@ const addNews = async () => {
 const deleteNews = async (newsId) => {
   if (confirm("Вы уверены, что хотите удалить эту новость?")) {
     try {
-      const response = await fetch(`http://localhost:8081/api/admin/news/${newsId}`, {
+      const response = await fetch(`/api/admin/news/${newsId}`, {
         method: "DELETE",
       });
 

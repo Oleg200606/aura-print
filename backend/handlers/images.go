@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-contrib/location"
 	"github.com/gin-gonic/gin"
 )
 
@@ -105,14 +106,14 @@ func UploadImage(c *gin.Context) {
 
 	// Возвращаем URL изображения
 	imageURL := fmt.Sprintf("/%s/%s", folder, newFilename)
-
+	url := location.Get(c)
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"message": "Image uploaded successfully",
 		"data": gin.H{
 			"filename": newFilename,
 			"url":      imageURL,
-			"fullUrl":  "http://localhost:8081" + imageURL,
+			"fullUrl":  url.Host + imageURL,
 		},
 	})
 }
