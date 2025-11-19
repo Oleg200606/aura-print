@@ -41,12 +41,18 @@ export default createStore({
           },
           body: JSON.stringify(credentials)
         })
-
-        console.log('📥 Login response status:', response.status)
+        if (!response.ok) {
+          console.error('📥 Login response status:', response.status)
+          return { success: false, error: "response status is not ok, status_code: " + response.status }
+        }
+        else {
+          console.log('📥 Login response status:', response.status)
+        }
         const data = await response.json()
+
         console.log('📥 Login response data:', data)
 
-        if (response.ok && data.success) {
+        if (data.success) {
           commit('SET_ADMIN', true)
           return { success: true }
         } else {

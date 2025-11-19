@@ -1,9 +1,18 @@
 services:
   backend:
     build: ./backend
+    restart: always
     ports:
       - 8081:8081
+    networks:
+      - back_net
   frontend:
     build: ./frontend
+    restart: always
     ports:
       - 80:80
+    networks:
+      - back_net
+networks:
+  back_net:
+    driver: bridge
