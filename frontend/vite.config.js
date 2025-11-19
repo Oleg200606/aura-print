@@ -14,6 +14,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    allowedHosts: [process.env.SITE_HOST],
     proxy: {
       "/api": {
         target: isProduction ? "http://backend:8081" : "http://localhost:8081",
