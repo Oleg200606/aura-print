@@ -3,7 +3,7 @@ import vue from "@vitejs/plugin-vue";
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const BACKEND_HOST = isProduction ? "http://backend:8081" : "http://localhost:8081";
+const BACKEND_HOST = isProduction ? "http://backend:8081" : "http://аура-принт.рф:8081";
 
 console.log("Current environment:", process.env.NODE_ENV);
 

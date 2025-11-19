@@ -175,7 +175,7 @@
           <div v-for="item in news" :key="item.id" class="news-item">
             <div class="news-image-container">
               <img
-                :src="getImageUrl(item.image_url)"
+                :src="item.imageUrl()"
                 :alt="item.title"
                 class="news-image"
                 @error="handleImageError"
@@ -218,65 +218,36 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
-export default {
-  name: "Home",
-  setup() {
-    const store = useStore();
-    const news = computed(() => store.state.news);
+const store = useStore();
+const news = computed(() => store.state.news);
 
-    onMounted(() => {
-      store.dispatch("fetchNews");
-    });
+onMounted(() => {
+  store.dispatch("fetchNews");
+});
 
-    const formatDate = (dateString) => {
-      if (!dateString) return "Дата не указана";
-      const date = new Date(dateString);
-      return date.toLocaleDateString("ru-RU", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      });
-    };
+const formatDate = (dateString) => {
+  if (!dateString) return "Дата не указана";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
 
-    const truncateText = (text, maxLength) => {
-      if (!text) return "";
-      if (text.length <= maxLength) return text;
-      return text.substring(0, maxLength) + "...";
-    };
+const truncateText = (text, maxLength) => {
+  if (!text) return "";
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength) + "...";
+};
 
-    const getImageUrl = (imagePath) => {
-      if (!imagePath) {
-        return "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop";
-      }
-
-      if (imagePath.startsWith("http")) {
-        return imagePath;
-      }
-
-      if (imagePath.startsWith("/")) {
-        return import.meta.env.BACKEND_HOST + `${imagePath}`;
-      }
-
-      return import.meta.env.BACKEND_HOST + `/uploads/news/${imagePath}`;
-    };
-
-    const handleImageError = (event) => {
-      event.target.src =
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop";
-    };
-
-    return {
-      news,
-      formatDate,
-      truncateText,
-      getImageUrl,
-      handleImageError,
-    };
-  },
+const handleImageError = (event) => {
+  event.target.src =
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop";
 };
 </script>
 

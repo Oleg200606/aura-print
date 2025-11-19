@@ -77,7 +77,7 @@
           <!-- News List -->
           <div class="grid grid-2">
             <div v-for="item in news" :key="item.id" class="news-admin-card card">
-              <img :src="item.image" :alt="item.title" class="news-image" />
+              <img :src="item.imageUrl()" :alt="item.title" class="news-image" />
               <div class="news-content">
                 <h3>{{ item.title }}</h3>
                 <p>{{ item.content }}</p>
@@ -121,6 +121,8 @@ const newNews = ref({
 });
 
 const news = computed(() => store.state.news);
+
+const imageUrl = (image) => import.meta.env.BACKEND_HOST + "/" + image.image_url;
 
 onMounted(() => {
   store.dispatch("fetchNews");

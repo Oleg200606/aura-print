@@ -77,12 +77,22 @@ export default createStore({
       }
     },
 
-    async fetchNews({ commit }) {
+    async fetchNews({ state, commit }) {
       try {
         const response = await fetch("/api/news");
         if (!response.ok) throw new Error("Network response was not ok");
         const news = await response.json();
-        commit("SET_NEWS", news);
+        for (const newsItem of news) {
+          newsItem.imageUrl = () => {
+            const backHost = import.meta.env.BACKEND_HOST;
+            if (!newsItem.image_url || !backHost) {
+              return "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop";
+            }
+
+            return backHost + newsItem.image_url;
+          };
+        }
+        state.news = news;
       } catch (error) {
         console.error("Failed to fetch news:", error);
       }
