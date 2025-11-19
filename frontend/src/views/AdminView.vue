@@ -197,7 +197,7 @@ const addNews = async () => {
 
   // Затем создаем новость
   try {
-    const response = await fetch("http://localhost:8081/api/admin/news", {
+    const response = await fetch("/api/admin/news", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
