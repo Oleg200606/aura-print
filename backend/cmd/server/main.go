@@ -1,31 +1,29 @@
 package main
 
 import (
+	"auraprint/config"
 	"auraprint/database"
 	"auraprint/handlers"
 	"auraprint/middleware"
-	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"slices"
 
+	"github.com/charmbracelet/log"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/location"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	// Загрузка .env файла
-	if err := godotenv.Load(); err != nil {
-		log.Println("⚠️  No .env file found, using system environment variables")
+	conf := config.New()
+	// Initialize database
+	db, err := database.Connect(conf)
+	if err != nil {
+		log.Fatal("Failed to connect to database: %s", err.Error())
 	}
 
-	// Initialize database
-	if err := database.InitDatabase(); err != nil {
-		panic("Failed to connect to database: " + err.Error())
-	}
+	app := handlers.NewApplication(db)
 
 	router := gin.Default()
 
@@ -47,33 +45,33 @@ func main() {
 
 	// Log all requests
 	router.Use(func(c *gin.Context) {
-		fmt.Printf("🌐 %s %s from %s\n", c.Request.Method, c.Request.URL.Path, c.Request.RemoteAddr)
+		log.Printf("🌐 %s %s from %s\n", c.Request.Method, c.Request.URL.Path, c.Request.RemoteAddr)
 		c.Next()
 	})
 
 	// Public routes
 	public := router.Group("/api")
 	{
-		public.GET("/products", handlers.GetProducts)
-		public.GET("/news", handlers.GetNews)
-		public.POST("/admin/login", handlers.Login)
-		public.POST("/contact", handlers.SendContactMessage)
+		public.GET("/products", app.GetProducts)
+		public.GET("/news", app.GetNews)
+		public.POST("/admin/login", app.Login)
+		public.POST("/contact", app.SendContactMessage)
 
 		// Новый маршрут для получения изображений
-		public.GET("/images/:filename", handlers.GetImage)
+		public.GET("/images/:filename", app.GetImage)
 	}
 
 	// Admin routes
 	admin := router.Group("/api/admin")
 	{
-		admin.POST("/products", handlers.CreateProduct)
-		admin.DELETE("/products/:id", handlers.DeleteProduct)
-		admin.POST("/news", handlers.CreateNews)
-		admin.DELETE("/news/:id", handlers.DeleteNews)
+		admin.POST("/products", app.CreateProduct)
+		admin.DELETE("/products/:id", app.DeleteProduct)
+		admin.POST("/news", app.CreateNews)
+		admin.DELETE("/news/:id", app.DeleteNews)
 
 		// Новые маршруты для загрузки изображений
-		admin.POST("/upload/image", handlers.UploadImage)
-		admin.DELETE("/images/:filename", handlers.DeleteImage)
+		admin.POST("/upload/image", app.UploadImage)
+		admin.DELETE("/images/:filename", app.DeleteImage)
 	}
 
 	// Health check
@@ -97,10 +95,10 @@ func main() {
 		})
 	})
 
-	fmt.Println("🚀 Server starting on :8081")
-	fmt.Println("📡 API available at http://localhost:8081/api")
-	fmt.Println("❤️ Health check at http://localhost:8081/health")
-	fmt.Println("🖼️ Images available at http://localhost:8081/uploads/")
+	log.Print("🚀 Server starting on :8081")
+	log.Print("📡 API available at http://localhost:8081/api")
+	log.Print("❤️  Health check at http://localhost:8081/health")
+	log.Print("🖼️  Images available at http://localhost:8081/uploads/")
 
 	if err := router.Run(":8081"); err != nil {
 		log.Fatalf("Failed run server: %s", err)

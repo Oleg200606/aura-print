@@ -14,7 +14,7 @@ import (
 )
 
 // GetImage возвращает изображение
-func GetImage(c *gin.Context) {
+func (app *App) GetImage(c *gin.Context) {
 	filename := c.Param("filename")
 
 	// Безопасная проверка имени файла
@@ -42,7 +42,7 @@ func GetImage(c *gin.Context) {
 }
 
 // UploadImage загружает изображение
-func UploadImage(c *gin.Context) {
+func (app *App) UploadImage(c *gin.Context) {
 	// Получаем файл из формы
 	file, err := c.FormFile("image")
 	if err != nil {
@@ -119,7 +119,7 @@ func UploadImage(c *gin.Context) {
 }
 
 // DeleteImage удаляет изображение
-func DeleteImage(c *gin.Context) {
+func (app *App) DeleteImage(c *gin.Context) {
 	filename := c.Param("filename")
 
 	if strings.Contains(filename, "..") {

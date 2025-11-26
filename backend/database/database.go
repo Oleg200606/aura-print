@@ -4,21 +4,20 @@ import (
 	"auraprint/models"
 	"fmt"
 
+	"github.com/charmbracelet/log"
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/spf13/viper"
 )
 
-var DB *gorm.DB
-
-func InitDatabase() error {
-	var err error
-	DB, err = gorm.Open("sqlite3", "auraprint.db")
+func Connect(config *viper.Viper) (*gorm.DB, error) {
+	db, err := gorm.Open("sqlite3", config.GetString("database.connection_string"))
 	if err != nil {
-		return err
+		return db, err
 	}
 
 	// Auto migrate models
-	DB.AutoMigrate(&models.Product{}, &models.News{}, &models.Admin{})
+	db.AutoMigrate(&models.Product{}, &models.News{}, &models.Admin{})
 
 	// Create default admin user with hashed password
 	admin := models.Admin{
@@ -26,20 +25,20 @@ func InitDatabase() error {
 	}
 
 	// Хешируем пароль
-	if err := admin.HashPassword("password"); err != nil {
-		return fmt.Errorf("failed to hash password: %v", err)
+	if err := admin.SetPassword("password"); err != nil {
+		return nil, fmt.Errorf("failed to set admin password: %v", err)
 	}
 
 	// Check if admin exists, if not create it
 	var existingAdmin models.Admin
-	if DB.Where("username = ?", "admin").First(&existingAdmin).Error != nil {
-		if err := DB.Create(&admin).Error; err != nil {
-			return err
+	if db.Where("username = ?", "admin").First(&existingAdmin).Error != nil {
+		if err := db.Create(&admin).Error; err != nil {
+			return nil, err
 		}
-		fmt.Println("✅ Admin user created: admin / password")
+		log.Info("✅ Admin user created: admin / password")
 	} else {
-		fmt.Println("✅ Admin user already exists")
+		log.Info("✅ Admin user already exists")
 	}
 
-	return nil
+	return db, nil
 }

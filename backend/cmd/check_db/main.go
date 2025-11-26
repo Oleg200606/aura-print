@@ -2,34 +2,40 @@
 package main
 
 import (
-    "auraprint/database"
-    "auraprint/models"
-    "fmt"
-    "log"
+	"auraprint/config"
+	"auraprint/database"
+	"auraprint/models"
+	"fmt"
+
+	"github.com/charmbracelet/log"
 )
 
 func main() {
-    if err := database.InitDatabase(); err != nil {
-        log.Fatal(err)
-    }
 
-    var admins []models.Admin
-    if err := database.DB.Find(&admins).Error; err != nil {
-        log.Fatal(err)
-    }
+	conf := config.New()
 
-    fmt.Printf("👥 Found %d admin users:\n", len(admins))
-    for i, admin := range admins {
-        fmt.Printf("   %d: ID=%d, Username='%s', Password='%s'\n", 
-            i+1, admin.ID, admin.Username, admin.Password)
-    }
+	db, err := database.Connect(conf)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    // Также проверим другие таблицы
-    var products []models.Product
-    database.DB.Find(&products)
-    fmt.Printf("📦 Found %d products\n", len(products))
+	var admins []models.Admin
+	if err := db.Find(&admins).Error; err != nil {
+		log.Fatal(err)
+	}
 
-    var news []models.News
-    database.DB.Find(&news)
-    fmt.Printf("📰 Found %d news items\n", len(news))
+	fmt.Printf("👥 Found %d admin users:\n", len(admins))
+	for i, admin := range admins {
+		fmt.Printf("   %d: ID=%d, Username='%s', Password='%s'\n",
+			i+1, admin.ID, admin.Username, admin.PasswordHash)
+	}
+
+	// Также проверим другие таблицы
+	var products []models.Product
+	db.Find(&products)
+	fmt.Printf("📦 Found %d products\n", len(products))
+
+	var news []models.News
+	db.Find(&news)
+	fmt.Printf("📰 Found %d news items\n", len(news))
 }

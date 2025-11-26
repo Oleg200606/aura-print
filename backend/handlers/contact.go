@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"net/smtp"
 	"os"
-	"fmt"
-	"time"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,9 +19,9 @@ type ContactForm struct {
 }
 
 // SendContactMessage обработчик для отправки сообщения с формы
-func SendContactMessage(c *gin.Context) {
+func (app *App) SendContactMessage(c *gin.Context) {
 	var form ContactForm
-	
+
 	if err := c.ShouldBindJSON(&form); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
