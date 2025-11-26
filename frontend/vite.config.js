@@ -7,7 +7,7 @@ export default ({ mode }) => {
   const env = { ...process.env, ...loadEnv(mode, process.cwd()) };
   const isProduction = mode === "production";
 
-  const BACKEND_HOST = isProduction ? "http://backend:8081" : "http://аура-принт.рф:8081";
+  const BACKEND_HOST = isProduction ? "http://backend:8081" : "http://localhost:8081";
 
   console.log("Current environment:", env.NODE_ENV);
 

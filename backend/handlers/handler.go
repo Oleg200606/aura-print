@@ -1,11 +1,15 @@
 package handlers
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+	"github.com/spf13/viper"
+)
 
 type App struct {
-	db *gorm.DB
+	db     *gorm.DB
+	config *viper.Viper
 }
 
-func NewApplication(db *gorm.DB) *App {
-	return &App{db: db}
+func NewApplication(db *gorm.DB, conf *viper.Viper) *App {
+	return &App{db: db, config: conf}
 }

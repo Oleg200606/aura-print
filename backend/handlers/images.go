@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"fmt"
+	"path"
+	"slices"
 
 	"net/http"
 	"os"
@@ -9,8 +11,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/charmbracelet/log"
 	"github.com/gin-contrib/location"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 // GetImage возвращает изображение
@@ -54,15 +58,20 @@ func (app *App) UploadImage(c *gin.Context) {
 	}
 
 	// Проверяем тип файла
-	allowedTypes := map[string]bool{
-		"image/jpeg": true,
-		"image/jpg":  true,
-		"image/png":  true,
-		"image/gif":  true,
-		"image/webp": true,
+	allowedTypes := []string{
+		"image/jpeg",
+		"image/jpg",
+		"image/png",
+		"image/gif",
+		"image/webp",
 	}
 
 	openedFile, _ := file.Open()
+	defer func() {
+		if err := openedFile.Close(); err != nil {
+			log.Error("Failed close opened multipart file", "error", err)
+		}
+	}()
 	buffer := make([]byte, 512)
 	_, err = openedFile.Read(buffer)
 	if err != nil {
@@ -72,19 +81,19 @@ func (app *App) UploadImage(c *gin.Context) {
 		})
 		return
 	}
-	openedFile.Close()
 
 	mimeType := http.DetectContentType(buffer)
-	if !allowedTypes[mimeType] {
+	if !slices.Contains(allowedTypes, mimeType) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"success": false,
-			"message": "Invalid file type. Only JPEG, PNG, GIF, and WebP are allowed",
+			"message": "Invalid file type. Allowed types are: " + strings.Join(allowedTypes, ", "),
 		})
 		return
 	}
 
 	// Генерируем уникальное имя файла
 	ext := filepath.Ext(file.Filename)
+
 	timestamp := time.Now().Format("20060102150405")
 	newFilename := fmt.Sprintf("%s%s", timestamp, ext)
 
@@ -116,6 +125,22 @@ func (app *App) UploadImage(c *gin.Context) {
 			"fullUrl":  url.Host + imageURL,
 		},
 	})
+}
+
+func pathFromID(id string) (string, error) {
+	_, err := uuid.Parse(id)
+	if err != nil {
+		return "", fmt.Errorf("failed parse uuid: %s", err)
+	}
+
+	dirs := strings.Split(id, "-")
+	file := ""
+	for _, dir := range dirs {
+		file += path.Join(file, dir)
+	}
+
+	file = path.Join(file, id+".jpeg")
+	return file, nil
 }
 
 // DeleteImage удаляет изображение

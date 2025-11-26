@@ -23,7 +23,7 @@ func main() {
 		log.Fatal("Failed to connect to database: %s", err.Error())
 	}
 
-	app := handlers.NewApplication(db)
+	app := handlers.NewApplication(db, conf)
 
 	router := gin.Default()
 
@@ -82,15 +82,32 @@ func main() {
 	// API info
 	router.GET("/api", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "AuraPrint API",
-			"version": "1.0",
-			"endpoints": []string{
-				"GET /api/products",
-				"GET /api/news",
-				"POST /api/admin/login",
-				"POST /api/contact",
-				"GET /api/images/:filename",
-				"POST /api/admin/upload/image",
+			"openapi": "3.1.0",
+			"info": gin.H{
+				"title":   "AuraPrint API",
+				"version": "1.0",
+			},
+			"paths": gin.H{
+				"/api/products": gin.H{
+					"GET": gin.H{},
+				},
+				"/api/news": gin.H{
+					"GET": gin.H{},
+				},
+				"/api/admin/login": gin.H{
+					"POST": gin.H{
+						"summary": "Authorizes in system",
+					},
+				},
+				"/api/contact": gin.H{
+					"POST": gin.H{},
+				},
+				"/api/images/:filename ": gin.H{
+					"GET": gin.H{},
+				},
+				"/api/admin/upload/image": gin.H{
+					"POST": gin.H{},
+				},
 			},
 		})
 	})

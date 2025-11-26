@@ -221,6 +221,7 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
+import { DEFAULT_IMAGE_URL } from "@/data";
 
 const store = useStore();
 const news = computed(() => store.state.news);
@@ -246,8 +247,7 @@ const truncateText = (text, maxLength) => {
 };
 
 const handleImageError = (event) => {
-  event.target.src =
-    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop";
+  event.target.src = DEFAULT_IMAGE_URL;
 };
 </script>
 

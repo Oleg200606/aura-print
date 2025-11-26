@@ -107,6 +107,8 @@ const selectedFile = ref(null);
 const isDragOver = ref(false);
 const fileInput = ref(null);
 
+import { DEFAULT_IMAGE_URL } from "@/data";
+
 const newProduct = ref({
   name: "",
   description: "",
@@ -118,7 +120,6 @@ onMounted(() => {
   store.dispatch("fetchProducts");
 });
 
-const DEFAULT_IMAGE_URL = "http://placekitten.com/800/600";
 const getImageUrl = (imagePath) => {
   console.log(imagePath);
   if (!imagePath) return DEFAULT_IMAGE_URL;

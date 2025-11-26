@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 
+import { DEFAULT_IMAGE_URL } from "@/data";
 export default createStore({
   state: {
     isAdmin: localStorage.getItem("isAdmin") === "true" || false,
@@ -86,7 +87,7 @@ export default createStore({
           newsItem.imageUrl = () => {
             const backHost = import.meta.env.BACKEND_HOST;
             if (!newsItem.image_url || !backHost) {
-              return "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop";
+              return DEFAULT_IMAGE_URL;
             }
 
             return backHost + newsItem.image_url;
