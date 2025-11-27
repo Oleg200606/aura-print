@@ -2,17 +2,45 @@
   <div class="home">
     <!-- Hero Section -->
     <section class="hero">
-      <div class="hero-content">
-        <h1 class="hero-title">AuraPrint</h1>
-        <p class="hero-subtitle">Профессиональная печать и корпоративный мерч</p>
-        <p class="hero-description">
-          Современное оборудование, качественные материалы и индивидуальный подход к каждому клиенту
-        </p>
-        <div class="hero-buttons">
-          <router-link to="/catalog" class="btn btn-primary">Смотреть каталог</router-link>
-          <router-link to="/contact" class="btn btn-secondary">Получить консультацию</router-link>
+      <div class="hero-background">
+        <div class="hero-shapes">
+          <div class="shape shape-1"></div>
+          <div class="shape shape-2"></div>
+          <div class="shape shape-3"></div>
         </div>
       </div>
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          🎉 Новый бренд! Теперь мы - Купи-Принт.ру
+        </div>
+        <h1 class="hero-title">
+          <span class="title-main">Купи-Принт</span>
+          <span class="title-dot">.ру</span>
+        </h1>
+        <p class="hero-subtitle">Печать, которая вдохновляет</p>
+        <p class="hero-description">
+          Современная печать на любой поверхности. От одежды до сувениров -
+          создаем то, что подчеркнет ваш стиль
+        </p>
+        <div class="hero-buttons">
+          <router-link to="/catalog" class="btn btn-primary">
+            🛍️ Смотреть каталог
+          </router-link>
+          <router-link to="/contact" class="btn btn-secondary">
+            💬 Бесплатная консультация
+          </router-link>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="floating-products">
+          <div class="product-preview preview-1">👕</div>
+          <div class="product-preview preview-2">☕</div>
+          <div class="product-preview preview-3">🎁</div>
+        </div>
+      </div>
+
       <div class="hero-stats">
         <div class="stat-item">
           <div class="stat-number">500+</div>
@@ -38,11 +66,8 @@
       <div class="grid grid-3">
         <div class="service-card card">
           <div class="service-image">
-            <img
-              src="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=500&h=300&fit=crop"
-              alt="Печать на одежде"
-              loading="lazy"
-            />
+            <img src="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?w=500&h=300&fit=crop"
+              alt="Печать на одежде" loading="lazy" />
           </div>
           <div class="service-content">
             <h3>Печать на одежде</h3>
@@ -56,11 +81,8 @@
         </div>
         <div class="service-card card">
           <div class="service-image">
-            <img
-              src="https://images.unsplash.com/photo-1549465227-3d42e0078eed?w=500&h=300&fit=crop"
-              alt="Сувенирная продукция"
-              loading="lazy"
-            />
+            <img src="https://images.unsplash.com/photo-1549465227-3d42e0078eed?w=500&h=300&fit=crop"
+              alt="Сувенирная продукция" loading="lazy" />
           </div>
           <div class="service-content">
             <h3>Сувенирная продукция</h3>
@@ -74,11 +96,8 @@
         </div>
         <div class="service-card card">
           <div class="service-image">
-            <img
-              src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop"
-              alt="Корпоративный мерч"
-              loading="lazy"
-            />
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop"
+              alt="Корпоративный мерч" loading="lazy" />
           </div>
           <div class="service-content">
             <h3>Корпоративный мерч</h3>
@@ -174,13 +193,8 @@
         <div v-if="news.length > 0" class="news-grid">
           <div v-for="item in news" :key="item.id" class="news-item">
             <div class="news-image-container">
-              <img
-                :src="item.imageUrl()"
-                :alt="item.title"
-                class="news-image"
-                @error="handleImageError"
-                loading="lazy"
-              />
+              <img :src="item.imageUrl()" :alt="item.title" class="news-image" @error="handleImageError"
+                loading="lazy" />
               <div class="news-overlay">
                 <div class="news-date-badge">
                   {{ formatDate(item.created_at) }}
@@ -252,62 +266,215 @@ const handleImageError = (event) => {
 </script>
 
 <style scoped>
-/* Mobile First Approach */
+/* Новая цветовая схема */
+:root {
+  --primary: #FF6B35;
+  --primary-dark: #E55A2B;
+  --secondary: #2EC4B6;
+  --secondary-dark: #25A99A;
+  --dark: #1A1F2B;
+  --light: #F8F9FA;
+  --accent: #FFD166;
+  --text-dark: #2D3748;
+  --text-light: #718096;
+}
+
+/* Hero Section - полностью переработан */
 .hero {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+  background: linear-gradient(135deg, var(--dark) 0%, #2D3748 100%);
   color: white;
-  text-align: center;
-  padding: 2rem 1rem;
+  padding: 4rem 1rem;
   position: relative;
-  min-height: 60vh;
+  overflow: hidden;
+  min-height: 80vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.hero-shapes .shape {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+  opacity: 0.1;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  right: -100px;
+}
+
+.shape-2 {
+  width: 200px;
+  height: 200px;
+  bottom: 100px;
+  left: -50px;
+  background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+}
+
+.shape-3 {
+  width: 150px;
+  height: 150px;
+  top: 50%;
+  right: 20%;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
 }
 
 .hero-content {
-  max-width: 800px;
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
   margin: 0 auto;
+  text-align: center;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .hero-title {
-  font-size: 2.5rem;
+  font-size: 4rem;
+  font-weight: 800;
   margin-bottom: 1rem;
-  font-weight: bold;
-  line-height: 1.2;
+  line-height: 1.1;
+}
+
+.title-main {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-dot {
+  color: var(--secondary);
 }
 
 .hero-subtitle {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  opacity: 0.95;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--secondary);
   font-weight: 300;
-  line-height: 1.3;
 }
 
 .hero-description {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
   opacity: 0.9;
-  line-height: 1.5;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
 }
 
 .hero-buttons {
   display: flex;
-  flex-direction: column;
   gap: 1rem;
-  margin-bottom: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+/* Floating products animation */
+.hero-visual {
+  position: relative;
+  z-index: 2;
+}
+
+.floating-products {
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.product-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.preview-1 {
+  top: -50px;
+  left: 0;
+  animation: float 3s ease-in-out infinite;
+}
+
+.preview-2 {
+  top: 50px;
+  left: 100px;
+  animation: float 3s ease-in-out infinite 1s;
+}
+
+.preview-3 {
+  top: 150px;
+  left: 50px;
+  animation: float 3s ease-in-out infinite 2s;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 .hero-stats {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  padding: 1.5rem;
-  border-radius: 15px;
+  padding: 2rem;
+  border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
 .stat-item {
@@ -315,9 +482,13 @@ const handleImageError = (event) => {
 }
 
 .stat-number {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .stat-label {
@@ -325,28 +496,72 @@ const handleImageError = (event) => {
   opacity: 0.9;
 }
 
+/* Обновленные кнопки */
+.btn {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: white;
+  border: 2px solid var(--secondary);
+  box-shadow: 0 8px 25px rgba(46, 196, 182, 0.2);
+}
+
+.btn-secondary:hover {
+  background: var(--secondary);
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(46, 196, 182, 0.3);
+}
+
+/* Section Header */
 .section-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .section-header h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #2c3e50;
+  color: var(--dark);
   line-height: 1.2;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .section-header p {
-  font-size: 1.1rem;
-  color: #666;
+  font-size: 1.2rem;
+  color: var(--text-light);
   line-height: 1.4;
 }
 
 /* Grid System */
 .grid {
   display: grid;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .grid-3 {
@@ -360,10 +575,11 @@ const handleImageError = (event) => {
 /* Cards */
 .card {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .service-card {
@@ -372,9 +588,14 @@ const handleImageError = (event) => {
   overflow: hidden;
 }
 
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
 .service-image {
   width: 100%;
-  height: 200px;
+  height: 250px;
   overflow: hidden;
 }
 
@@ -382,17 +603,25 @@ const handleImageError = (event) => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
+}
+
+.service-card:hover .service-image img {
+  transform: scale(1.1);
 }
 
 .service-content {
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 .service-card h3 {
   margin-bottom: 1rem;
-  color: #2c3e50;
-  font-size: 1.3rem;
+  color: var(--dark);
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .service-features {
@@ -403,16 +632,16 @@ const handleImageError = (event) => {
 }
 
 .service-features li {
-  padding: 0.4rem 0;
-  color: #555;
+  padding: 0.5rem 0;
+  color: var(--text-light);
   position: relative;
   padding-left: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .service-features li:before {
   content: "✓";
-  color: #667eea;
+  color: var(--primary);
   font-weight: bold;
   position: absolute;
   left: 0;
@@ -420,33 +649,41 @@ const handleImageError = (event) => {
 
 /* Advantages */
 .advantages-section {
-  background: #f8f9fa;
-  padding: 3rem 0;
+  background: linear-gradient(135deg, var(--light) 0%, #FFFFFF 100%);
+  padding: 5rem 0;
 }
 
 .advantage-card {
   text-align: center;
-  padding: 1.5rem;
+  padding: 2rem;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.advantage-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
 .advantage-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  display: block;
 }
 
 .advantage-card h4 {
   margin-bottom: 1rem;
-  color: #2c3e50;
-  font-size: 1.2rem;
+  color: var(--dark);
+  font-size: 1.3rem;
 }
 
 .advantage-card p {
-  color: #666;
+  color: var(--text-light);
   line-height: 1.5;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 /* Process Steps */
@@ -459,65 +696,76 @@ const handleImageError = (event) => {
 .process-step {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
-  padding: 1.5rem;
+  gap: 1.5rem;
+  padding: 2rem;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.process-step:hover {
+  transform: translateX(10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
 .step-number {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   flex-shrink: 0;
 }
 
 .step-content h4 {
   margin-bottom: 0.5rem;
-  color: #2c3e50;
-  font-size: 1.1rem;
+  color: var(--dark);
+  font-size: 1.3rem;
 }
 
 .step-content p {
-  color: #666;
+  color: var(--text-light);
   line-height: 1.5;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 /* News Section */
 .news-section {
-  background: #f8f9fa;
-  padding: 3rem 0;
+  background: linear-gradient(135deg, var(--light) 0%, #FFFFFF 100%);
+  padding: 5rem 0;
 }
 
 .news-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .news-item {
   background: white;
-  border-radius: 12px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+}
+
+.news-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
 .news-image-container {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 250px;
   overflow: hidden;
-  background: #f8f9fa;
+  background: var(--light);
 }
 
 .news-image {
@@ -536,11 +784,11 @@ const handleImageError = (event) => {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 .news-date-badge {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 20px;
@@ -553,35 +801,53 @@ const handleImageError = (event) => {
 }
 
 .news-title {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: var(--dark);
   margin-bottom: 0.75rem;
   line-height: 1.3;
 }
 
 .news-excerpt {
-  color: #666;
+  color: var(--text-light);
   line-height: 1.5;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 /* CTA Section */
 .cta-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: white;
-  padding: 3rem 0;
+  padding: 5rem 0;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="%23ffffff" opacity="0.1"><polygon points="1000,100 1000,0 0,100"/></svg>');
+  background-size: cover;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 2;
 }
 
 .cta-content h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
   line-height: 1.2;
 }
 
 .cta-content p {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin-bottom: 2rem;
   opacity: 0.9;
   line-height: 1.4;
@@ -591,45 +857,6 @@ const handleImageError = (event) => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-/* Buttons */
-.btn {
-  padding: 1rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  text-align: center;
-}
-
-.btn-primary {
-  background: white;
-  color: #667eea;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-}
-
-.btn-secondary:hover {
-  background: white;
-  color: #667eea;
-  transform: translateY(-2px);
 }
 
 /* Container */
@@ -642,35 +869,37 @@ const handleImageError = (event) => {
 /* Empty States */
 .empty-news {
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 4rem 2rem;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .empty-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
 }
 
 .empty-news h3 {
   margin-bottom: 1rem;
-  color: #2c3e50;
+  color: var(--dark);
+  font-size: 1.5rem;
 }
 
 .empty-news p {
-  color: #666;
+  color: var(--text-light);
   line-height: 1.5;
+  font-size: 1.1rem;
 }
 
 /* Tablet Styles */
 @media (min-width: 768px) {
   .hero {
-    padding: 4rem 2rem;
+    padding: 6rem 2rem;
   }
 
   .hero-title {
-    font-size: 3rem;
+    font-size: 5rem;
   }
 
   .hero-buttons {
@@ -698,16 +927,20 @@ const handleImageError = (event) => {
   .news-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .process-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Desktop Styles */
 @media (min-width: 1024px) {
   .hero {
-    padding: 6rem 2rem;
+    padding: 8rem 2rem;
   }
 
   .hero-title {
-    font-size: 3.5rem;
+    font-size: 6rem;
   }
 
   .grid-3 {
@@ -716,10 +949,6 @@ const handleImageError = (event) => {
 
   .grid-4 {
     grid-template-columns: repeat(4, 1fr);
-  }
-
-  .process-steps {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .news-grid {
@@ -759,6 +988,26 @@ const handleImageError = (event) => {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Анимации появления */
+.service-card,
+.advantage-card,
+.news-item,
+.process-step {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

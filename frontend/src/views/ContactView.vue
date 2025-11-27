@@ -64,52 +64,29 @@
             <form @submit.prevent="submitForm" class="form-body">
               <div class="form-group">
                 <label>Имя *</label>
-                <input
-                  v-model="form.name"
-                  type="text"
-                  required
-                  placeholder="Введите ваше имя"
-                  class="form-input"
-                  :class="{ error: errors.name }"
-                />
+                <input v-model="form.name" type="text" required placeholder="Введите ваше имя" class="form-input"
+                  :class="{ error: errors.name }" />
                 <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
                   <label>Email *</label>
-                  <input
-                    v-model="form.email"
-                    type="email"
-                    required
-                    placeholder="your@email.com"
-                    class="form-input"
-                    :class="{ error: errors.email }"
-                  />
+                  <input v-model="form.email" type="email" required placeholder="your@email.com" class="form-input"
+                    :class="{ error: errors.email }" />
                   <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
                 </div>
 
                 <div class="form-group">
                   <label>Телефон</label>
-                  <input
-                    v-model="form.phone"
-                    type="tel"
-                    placeholder="+7 (___) ___-__-__"
-                    class="form-input"
-                  />
+                  <input v-model="form.phone" type="tel" placeholder="+7 (___) ___-__-__" class="form-input" />
                 </div>
               </div>
 
               <div class="form-group">
                 <label>Сообщение *</label>
-                <textarea
-                  v-model="form.message"
-                  required
-                  placeholder="Опишите ваш вопрос или проект..."
-                  rows="5"
-                  class="form-textarea"
-                  :class="{ error: errors.message }"
-                ></textarea>
+                <textarea v-model="form.message" required placeholder="Опишите ваш вопрос или проект..." rows="5"
+                  class="form-textarea" :class="{ error: errors.message }"></textarea>
                 <span v-if="errors.message" class="error-message">{{ errors.message }}</span>
               </div>
 
@@ -118,12 +95,7 @@
                 {{ notification.message }}
               </div>
 
-              <button
-                type="submit"
-                class="btn btn-primary"
-                :class="{ 'btn-loading': isLoading }"
-                :disabled="isLoading"
-              >
+              <button type="submit" class="btn btn-primary" :class="{ 'btn-loading': isLoading }" :disabled="isLoading">
                 <span v-if="!isLoading">Отправить сообщение</span>
                 <span v-else>Отправка...</span>
               </button>
@@ -149,7 +121,7 @@ const isLoading = ref(false);
 const errors = ref({});
 const notification = ref({ message: "", type: "" });
 
-const PHONE_NUMBER = "+79955054001"; // Убираем все нецифровые символы
+const PHONE_NUMBER = "+79955054001";
 const EMAIL_ADDRESS = "auraprint@mail.ru";
 
 const OFFICE_ADDRESS = "г. Москва, пр-кт Волгоградский 32к31";
@@ -217,10 +189,22 @@ const submitForm = async () => {
 </script>
 
 <style scoped>
+:root {
+  --primary: #FF6B35;
+  --primary-dark: #E55A2B;
+  --secondary: #2EC4B6;
+  --secondary-dark: #25A99A;
+  --dark: #1A1F2B;
+  --light: #F8F9FA;
+  --accent: #FFD166;
+  --text-dark: #2D3748;
+  --text-light: #718096;
+}
+
 .contact {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--light) 0%, #FFFFFF 100%);
   min-height: 100vh;
-  padding: 4rem 0;
+  padding: 6rem 0 2rem;
 }
 
 .container {
@@ -236,14 +220,17 @@ const submitForm = async () => {
 .header-section h1 {
   font-size: 3rem;
   font-weight: 700;
-  color: white;
+  color: var(--dark);
   margin-bottom: 1rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .subtitle {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-light);
 }
 
 .contact-content {
@@ -259,12 +246,12 @@ const submitForm = async () => {
   padding: 2.5rem;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .contact-info h2 {
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: var(--dark);
   font-size: 1.5rem;
   font-weight: 600;
 }
@@ -277,11 +264,15 @@ const submitForm = async () => {
   border-radius: 12px;
   transition: all 0.3s ease;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid transparent;
 }
 
 .contact-item:hover {
-  background: #f8f9fa;
+  background: var(--light);
   transform: translateX(5px);
+  border-color: var(--primary);
 }
 
 .contact-item:active {
@@ -289,16 +280,13 @@ const submitForm = async () => {
 }
 
 .clickable {
-  color: #667eea;
+  color: var(--primary);
   font-weight: 500;
   transition: color 0.3s ease;
-  &:hover {
-    padding-left: 0;
-  }
 }
 
 .contact-item:hover .clickable {
-  color: #764ba2;
+  color: var(--primary-dark);
 }
 
 .icon-wrapper {
@@ -313,13 +301,13 @@ const submitForm = async () => {
 
 .contact-text h3 {
   margin-bottom: 0.5rem;
-  color: #34495e;
+  color: var(--dark);
   font-size: 1.1rem;
   font-weight: 600;
 }
 
 .contact-text p {
-  color: #7f8c8d;
+  color: var(--text-light);
   margin: 0;
   line-height: 1.5;
 }
@@ -330,6 +318,7 @@ const submitForm = async () => {
   padding: 2.5rem;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .form-header {
@@ -338,14 +327,14 @@ const submitForm = async () => {
 }
 
 .form-header h2 {
-  color: #2c3e50;
+  color: var(--dark);
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
 .form-header p {
-  color: #7f8c8d;
+  color: var(--text-light);
   margin: 0;
 }
 
@@ -368,7 +357,7 @@ const submitForm = async () => {
 
 .form-group label {
   margin-bottom: 0.5rem;
-  color: #2c3e50;
+  color: var(--dark);
   font-weight: 500;
   font-size: 0.9rem;
 }
@@ -380,21 +369,21 @@ const submitForm = async () => {
   border-radius: 10px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: #f8f9fa;
+  background: var(--light);
+  font-family: inherit;
 }
 
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--primary);
   background: white;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 .form-textarea {
   resize: vertical;
   min-height: 120px;
-  font-family: inherit;
 }
 
 .btn {
@@ -410,13 +399,14 @@ const submitForm = async () => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 15px 35px rgba(255, 107, 53, 0.4);
 }
 
 .btn-primary:disabled {
@@ -481,7 +471,7 @@ const submitForm = async () => {
 
 @media (max-width: 480px) {
   .contact {
-    padding: 2rem 0;
+    padding: 5rem 0 2rem;
   }
 
   .header-section h1 {

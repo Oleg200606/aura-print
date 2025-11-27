@@ -10,19 +10,16 @@
     <nav class="navbar" :class="{ 'mobile-open': isMobileMenuOpen }">
       <div class="nav-container">
         <router-link to="/" class="nav-logo" @click="closeMobileMenu">
-          <span class="logo-text">AuraPrint</span>
-          <span class="logo-subtitle">Маркетинговое оборудование</span>
+          <span class="logo-text">Купи-Принт</span>
+          <span class="logo-dot">.ру</span>
+          <span class="logo-subtitle">Профессиональная печать</span>
         </router-link>
         <div class="nav-menu">
           <router-link to="/" class="nav-link" @click="closeMobileMenu">Главная</router-link>
           <router-link to="/catalog" class="nav-link" @click="closeMobileMenu">Каталог</router-link>
           <router-link to="/about" class="nav-link" @click="closeMobileMenu">О нас</router-link>
-          <router-link to="/contact" class="nav-link" @click="closeMobileMenu"
-            >Контакты</router-link
-          >
-          <router-link v-if="isAdmin" to="/admin" class="nav-link" @click="closeMobileMenu"
-            >Админ</router-link
-          >
+          <router-link to="/contact" class="nav-link" @click="closeMobileMenu">Контакты</router-link>
+          <router-link v-if="isAdmin" to="/admin" class="nav-link" @click="closeMobileMenu">Админ</router-link>
           <button v-if="isAdmin" @click="logout" class="nav-link admin-link">Выйти</button>
         </div>
       </div>
@@ -38,8 +35,13 @@
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-section">
-          <h3>AuraPrint</h3>
-          <p>Производство маркетингового оборудования и корпоративного мерча</p>
+          <h3>Купи-Принт.ру</h3>
+          <p>Профессиональная печать и корпоративный мерч</p>
+          <div class="social-links">
+            <a href="#" class="social-link">📘</a>
+            <a href="#" class="social-link">📷</a>
+            <a href="#" class="social-link">💬</a>
+          </div>
         </div>
         <div class="footer-section">
           <h4>Контакты</h4>
@@ -52,10 +54,11 @@
           <p>Печать на одежде</p>
           <p>Сувенирная продукция</p>
           <p>Корпоративный мерч</p>
+          <p>Разработка дизайна</p>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2025 AuraPrint. Все права защищены.</p>
+        <p>&copy; 2025 Купи-Принт.ру. Все права защищены.</p>
         <router-link to="/admin" class="hidden-admin-link">.</router-link>
       </div>
     </footer>
@@ -111,7 +114,19 @@ const logout = () => {
 </script>
 
 <style>
-/* Mobile First Styles */
+/* Новая цветовая схема */
+:root {
+  --primary: #FF6B35;
+  --primary-dark: #E55A2B;
+  --secondary: #2EC4B6;
+  --secondary-dark: #25A99A;
+  --dark: #1A1F2B;
+  --light: #F8F9FA;
+  --accent: #FFD166;
+  --text-dark: #2D3748;
+  --text-light: #718096;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -123,10 +138,11 @@ html {
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  color: #333;
+  color: var(--text-dark);
   overflow-x: hidden;
+  background: var(--light);
 }
 
 /* Mobile Menu Toggle */
@@ -168,11 +184,16 @@ body {
 
 /* Navigation */
 .navbar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgba(26, 31, 43, 0.95);
+  backdrop-filter: blur(10px);
   padding: 1rem 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-container {
@@ -188,46 +209,72 @@ body {
   text-decoration: none;
   color: white;
   z-index: 1002;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .logo-text {
   font-size: 1.5rem;
   font-weight: bold;
-  display: block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-dot {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--secondary);
 }
 
 .logo-subtitle {
   font-size: 0.7rem;
-  opacity: 0.9;
-  display: block;
+  opacity: 0.8;
+  margin-left: 0.5rem;
+  font-weight: 300;
 }
 
 .nav-menu {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center;
 }
 
 .nav-link {
   color: white;
   text-decoration: none;
-  padding: 0.5rem 0.8rem;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
   border: none;
   background: none;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   white-space: nowrap;
+  font-weight: 500;
 }
 
 .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.nav-link.router-link-active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
 }
 
 .admin-link {
-  background-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 209, 102, 0.2);
+  border: 1px solid var(--accent);
   font-weight: bold;
+}
+
+.admin-link:hover {
+  background: var(--accent);
+  color: var(--dark);
 }
 
 /* Mobile Overlay */
@@ -243,14 +290,14 @@ body {
 
 .main-content {
   min-height: calc(100vh - 200px);
-  padding-top: 0;
+  padding-top: 80px;
 }
 
 /* Footer */
 .footer {
-  background: #2c3e50;
+  background: var(--dark);
   color: white;
-  padding: 2rem 0 0;
+  padding: 3rem 0 0;
 }
 
 .footer-content {
@@ -259,17 +306,25 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
-  padding: 0 1rem;
+  padding: 0 1rem 2rem;
 }
 
-.footer-section h3,
+.footer-section h3 {
+  margin-bottom: 1rem;
+  color: var(--primary);
+  font-size: 1.5rem;
+}
+
 .footer-section h4 {
   margin-bottom: 1rem;
+  color: var(--secondary);
+  font-size: 1.2rem;
 }
 
 .footer-section p {
   margin-bottom: 0.5rem;
   transition: all 0.3s ease;
+  opacity: 0.9;
 }
 
 .clickable {
@@ -283,16 +338,40 @@ body {
 }
 
 .clickable:hover {
-  color: #667eea;
+  color: var(--accent);
   background-color: rgba(255, 255, 255, 0.1);
   padding-left: 0.5rem;
 }
 
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background: var(--primary);
+  transform: translateY(-2px);
+}
+
 .footer-bottom {
   text-align: center;
-  padding: 1rem;
+  padding: 1.5rem;
   margin-top: 2rem;
-  border-top: 1px solid #34495e;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
 }
 
@@ -325,7 +404,7 @@ body {
     width: 80%;
     max-width: 300px;
     height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--dark) 0%, #2D3748 100%);
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
@@ -355,6 +434,10 @@ body {
   }
 
   .clickable {
+    justify-content: center;
+  }
+
+  .social-links {
     justify-content: center;
   }
 }
@@ -413,13 +496,13 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
 }
 
 .card {
@@ -457,6 +540,10 @@ body {
   .clickable:hover {
     padding-left: 0;
     background-color: transparent;
+  }
+
+  .nav-link:hover {
+    transform: none;
   }
 }
 
