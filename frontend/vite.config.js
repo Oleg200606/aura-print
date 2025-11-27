@@ -6,10 +6,15 @@ export default ({ mode }) => {
   // eslint-disable-next-line no-undef
   const env = { ...process.env, ...loadEnv(mode, process.cwd()) };
   const isProduction = mode === "production";
-
-  const BACKEND_HOST = isProduction ? "http://backend:8081" : "http://localhost:8081";
-
   console.log("Current environment:", env.NODE_ENV);
+
+  const BACKEND_HOST = env.BACKEND_HOST
+    ? env.BACKEND_HOST
+    : isProduction
+    ? "http://backend:8081"
+    : "http://localhost:8081";
+
+  console.log("Backend host:", BACKEND_HOST);
 
   return defineConfig({
     plugins: [vue(), tailwindcss()],

@@ -1,14 +1,14 @@
 services:
     backend:
         build: ./backend
-        restart: always
+        restart: unless-stopped
         ports:
             - 8081:8081
         networks:
             - back_net
     frontend:
         build: ./frontend
-        restart: always
+        restart: unless-stopped
         ports:
             - 80:5173
         networks:
@@ -16,6 +16,7 @@ services:
         environment:
             NODE_ENV: production
             SITE_HOST: xn----7sba7azakeduc.xn--p1ai
+            BACKEND_HOST: http://backend:8081
 networks:
     back_net:
         driver: bridge
